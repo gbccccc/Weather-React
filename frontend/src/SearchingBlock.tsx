@@ -12,15 +12,15 @@ function SearchingBlock() {
         <h2> Weather Search🌥️ </h2>
         <Form>
           <Form.Group>
-            <Form.Group>
+            <Form.Group controlId="street">
               <Form.Label>Street</Form.Label>
               <Form.Control type="input" required name="street"></Form.Control>
             </Form.Group>
-            <Form.Group>
+            <Form.Group controlId="city">
               <Form.Label>City</Form.Label>
               <Form.Control type="input" required name="city"></Form.Control>
             </Form.Group>
-            <Form.Group>
+            <Form.Group controlId="state">
               <Form.Label>State</Form.Label>
               <Form.Select required name="state">
                 <option>Select Your State</option>
@@ -29,6 +29,11 @@ function SearchingBlock() {
             </Form.Group>
           </Form.Group>
           <hr/>
+          <Form.Group controlId="autodetect">
+            <Form.Label>Autodetect Location</Form.Label>
+            <Form.Control type="checkbox" name="autodetect"></Form.Control>
+            <Form.Label>Current Location</Form.Label>
+          </Form.Group>
           <Button><i className="bi bi-search"></i>Search</Button>
           <Button><i className="bi bi-list-nested"></i>Clear</Button>
         </Form>
