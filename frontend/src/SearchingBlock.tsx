@@ -4,6 +4,7 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useRef, useState} from "react";
+import {Interface} from "readline";
 
 function SearchingBlock({submitCallback, clearCallback}: {
   submitCallback: (needAutodetect: boolean, formData: string) => void,
@@ -11,26 +12,66 @@ function SearchingBlock({submitCallback, clearCallback}: {
 }) {
   let formRef = useRef<HTMLFormElement>(null)
   let autodetectRef = useRef<HTMLInputElement>(null)
-  let [disabled, setDisabled] = useState(false)
+
+  const [needAutodetect, setNeedAutodetect] = useState(false)
+  const [validated, setValidated] = useState(false);
+  const [entryValidated, setEntryValidated] = useState({
+    "street": false,
+    "city": false,
+    "state": false
+  })
+  const [entryValue, setEntryValue] = useState({
+    "street": "",
+    "city": "",
+    "state": ""
+  })
 
   const stateOptions = Object.entries(stateMappingJson).map(
       ([key, value]) => <option value={key} key={key}>{value}</option>
   )
 
   function onSubmit() {
+    if (needAutodetect) {
+      submitCallback(needAutodetect, "")
+      return
+    }
+
+    setValidated(true)
+    if (!formRef.current!.checkValidity()) {
+      return
+    }
+
     let formData = new FormData(formRef.current!)
+
     let addressArray = []
     let entries = Array.from(formData.entries());
     for (let entry of entries) {
       addressArray.push((entry[1] as string).replaceAll(" ", "+"))
     }
     let addressStr = addressArray.join()
-    submitCallback(autodetectRef.current!["checked"], addressStr)
+    submitCallback(needAutodetect, addressStr)
+  }
+
+  function onEntryChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    const {name, value} = event.target
+    setEntryValidated(prevState => ({
+      ...prevState,
+      [name]: true
+    }))
+    setEntryValue(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
   }
 
   function onAutodetectChange(e: React.ChangeEvent<HTMLInputElement>) {
-    console.log(disabled)
-    setDisabled(e.target.checked)
+    setValidated(false)
+    setNeedAutodetect(e.target.checked)
+  }
+
+  function entryInvalid(name: string) {
+    return (validated || entryValidated[name as keyof typeof entryValidated]) &&
+        entryValue[name as keyof typeof entryValue].replace(/\s+/g, "") === ""
   }
 
   return (
@@ -41,29 +82,40 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>Street</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="street"
-                            disabled={disabled}></Form.Control>
+              <Form.Control className="form-input" type="input" required name="street" onChange={onEntryChange}
+                            disabled={needAutodetect} isInvalid={entryInvalid("street")}></Form.Control>
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid street.
+              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="city">
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>City</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="city" disabled={disabled}></Form.Control>
+              <Form.Control className="form-input" type="input" required name="city" onChange={onEntryChange}
+                            disabled={needAutodetect} isInvalid={entryInvalid("city")}></Form.Control>
+              <Form.Control.Feedback type="invalid">
+                Please enter a valid city.
+              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="state">
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>State</Form.Label>
             <Col sm={3}>
-              <Form.Select required name="state" disabled={disabled}>
+              <Form.Select required name="state" onChange={onEntryChange} disabled={needAutodetect}
+                           isInvalid={entryInvalid("state")}>
                 <option value="" key="holder">Select Your State</option>
                 {stateOptions}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                Please choose a valid state.
+              </Form.Control.Feedback>
             </Col>
           </Form.Group>
           <hr/>
-          <Form.Group as={Row} controlId="autodetect" className="checkbox-row">
+          <Form.Group as={Row} controlId="autodetect" className="checkbox-row" validated={false}>
             <Form.Label column xs="auto">Autodetect Location</Form.Label>
             <Col xs="auto" className="checkbox-row">
               <Form.Check name="autodetect" ref={autodetectRef} onChange={onAutodetectChange}
