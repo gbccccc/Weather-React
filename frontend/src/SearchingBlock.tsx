@@ -69,9 +69,16 @@ function SearchingBlock({submitCallback, clearCallback}: {
     setNeedAutodetect(e.target.checked)
   }
 
-  function entryInvalid(name: string) {
-    return (validated || entryValidated[name as keyof typeof entryValidated]) &&
-        entryValue[name as keyof typeof entryValue].replace(/\s+/g, "") === ""
+  function isEntryInvalid(name: string) {
+    return entryValue[name as keyof typeof entryValue].replace(/\s+/g, "") === ""
+  }
+
+  function isInvalidFeedbackShown(name: string) {
+    return !needAutodetect && (validated || entryValidated[name as keyof typeof entryValidated]) && isEntryInvalid(name)
+  }
+
+  function isSubmitDisabled() {
+    return !needAutodetect && (isEntryInvalid("city") || isEntryInvalid("street") || isEntryInvalid("state"))
   }
 
   return (
@@ -82,8 +89,9 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>Street</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="street" onChange={onEntryChange}
-                            disabled={needAutodetect} isInvalid={entryInvalid("street")}></Form.Control>
+              <Form.Control className="form-input" type="input" required name="street"
+                            onChange={onEntryChange} onBlur={onEntryChange}
+                            disabled={needAutodetect} isInvalid={isInvalidFeedbackShown("street")}></Form.Control>
               <Form.Control.Feedback type="invalid">
                 Please enter a valid street.
               </Form.Control.Feedback>
@@ -93,8 +101,9 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>City</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="city" onChange={onEntryChange}
-                            disabled={needAutodetect} isInvalid={entryInvalid("city")}></Form.Control>
+              <Form.Control className="form-input" type="input" required name="city"
+                            onChange={onEntryChange} onBlur={onEntryChange}
+                            disabled={needAutodetect} isInvalid={isInvalidFeedbackShown("city")}></Form.Control>
               <Form.Control.Feedback type="invalid">
                 Please enter a valid city.
               </Form.Control.Feedback>
@@ -104,8 +113,9 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>State</Form.Label>
             <Col sm={3}>
-              <Form.Select required name="state" onChange={onEntryChange} disabled={needAutodetect}
-                           isInvalid={entryInvalid("state")}>
+              <Form.Select required name="state"
+                           onChange={onEntryChange} onBlur={onEntryChange}
+                           disabled={needAutodetect} isInvalid={isInvalidFeedbackShown("state")}>
                 <option value="" key="holder">Select Your State</option>
                 {stateOptions}
               </Form.Select>
@@ -115,14 +125,14 @@ function SearchingBlock({submitCallback, clearCallback}: {
             </Col>
           </Form.Group>
           <hr/>
-          <Form.Group as={Row} controlId="autodetect" className="checkbox-row" validated={false}>
+          <Form.Group as={Row} controlId="autodetect" className="checkbox-row">
             <Form.Label column xs="auto">Autodetect Location</Form.Label>
             <Col xs="auto" className="checkbox-row">
-              <Form.Check name="autodetect" ref={autodetectRef} onChange={onAutodetectChange}
-                          label="Current Location"></Form.Check>
+              <Form.Check name="autodetect" ref={autodetectRef}
+                          onChange={onAutodetectChange} label="Current Location"></Form.Check>
             </Col>
           </Form.Group>
-          <Button className="form-button" variant="primary" onClick={onSubmit}><i
+          <Button className="form-button" variant="primary" disabled={isSubmitDisabled()} onClick={onSubmit}><i
               className="bi bi-search"></i>Search</Button>
           <Button className="form-button" variant="outline-secondary"><i
               className="bi bi-list-nested"></i>Clear</Button>
