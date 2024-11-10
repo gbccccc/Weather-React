@@ -10,7 +10,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
   clearCallback: () => void
 }) {
   let formRef = useRef()
-  let autodetectRef = useRef(false)
+  let autodetectRef = useRef()
 
   const stateOptions = Object.entries(stateMappingJson).map(
       ([key, value]) => <option value={key} key={key}>{value}</option>
@@ -25,7 +25,9 @@ function SearchingBlock({submitCallback, clearCallback}: {
       addressArray.push(entryStr.replaceAll(" ", "+"))
     }
     let addressStr = addressArray.join()
-    submitCallback(autodetectRef.current.valueOf(), addressStr)
+    if (autodetectRef.current) {
+      submitCallback(autodetectRef.current["checked"], addressStr)
+    }
   }
 
   return (
@@ -52,7 +54,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
           <hr/>
           <Form.Group controlId="autodetect">
             <Form.Label>Autodetect Location</Form.Label>
-            <Form.Control type="checkbox" name="autodetect" ref={(r: any) => autodetectRef.current = r}></Form.Control>
+            <Form.Check name="autodetect" ref={(r: any) => autodetectRef.current = r}></Form.Check>
             <Form.Label>Current Location</Form.Label>
           </Form.Group>
           <Button variant="primary" onClick={onSubmit}><i className="bi bi-search"></i>Search</Button>
