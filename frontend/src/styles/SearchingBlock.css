@@ -2,6 +2,8 @@
     background-color: #dedede;
     padding: 10px 10px;
     width: 100%;
+    max-width: 1080px;
+    justify-self: center;
 }
 
 .searching-form .address-label {
@@ -12,7 +14,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    vertical-align: center;
 }
 
 .form-button {
