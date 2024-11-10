@@ -41,7 +41,8 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column sm={1}>Street</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="street" disabled={disabled}></Form.Control>
+              <Form.Control className="form-input" type="input" required name="street"
+                            disabled={disabled}></Form.Control>
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="city">
@@ -61,19 +62,19 @@ function SearchingBlock({submitCallback, clearCallback}: {
               </Form.Select>
             </Col>
           </Form.Group>
+          <hr/>
+          <Form.Group as={Row} controlId="autodetect" className="checkbox-row">
+            <Form.Label column xs="auto">Autodetect Location</Form.Label>
+            <Col xs="auto" className="checkbox-row">
+              <Form.Check name="autodetect" ref={autodetectRef} onChange={onAutodetectChange}
+                          label="Current Location"></Form.Check>
+            </Col>
+          </Form.Group>
+          <Button className="form-button" variant="primary" onClick={onSubmit}><i
+              className="bi bi-search"></i>Search</Button>
+          <Button className="form-button" variant="outline-secondary"><i
+              className="bi bi-list-nested"></i>Clear</Button>
         </Form>
-        <hr/>
-        <Form.Group as={Row} controlId="autodetect" className="checkbox-row">
-          <Form.Label column xs="auto">Autodetect Location</Form.Label>
-          <Col xs="auto" className="checkbox-row">
-            <Form.Check name="autodetect" ref={autodetectRef} onChange={onAutodetectChange}
-                        label="Current Location"></Form.Check>
-          </Col>
-        </Form.Group>
-        <Button className="form-button" variant="primary" onClick={onSubmit}><i
-            className="bi bi-search"></i>Search</Button>
-        <Button className="form-button" variant="outline-secondary"><i
-            className="bi bi-list-nested"></i>Clear</Button>
       </div>
   )
 }
