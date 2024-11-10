@@ -1,6 +1,6 @@
 import "styles/SearchingBlock.css"
 import stateMappingJson from "assets/jsons/state-mapping.json"
-import {Button, Form} from "react-bootstrap";
+import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useRef} from "react";
@@ -28,34 +28,42 @@ function SearchingBlock({submitCallback, clearCallback}: {
   }
 
   return (
-      <div>
+      <div className="searching-block">
         <h2> Weather Search🌥️ </h2>
-        <Form ref={formRef}>
-          <Form.Group>
-            <Form.Group className="mb-3" controlId="street">
-              <Form.Label>Street</Form.Label>
-              <Form.Control type="input" required name="street"></Form.Control>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="city">
-              <Form.Label>City</Form.Label>
-              <Form.Control type="input" required name="city"></Form.Control>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="state">
-              <Form.Label>State</Form.Label>
+        <Form className="searching-form" ref={formRef}>
+          <Form.Group as={Row} className="mb-3" controlId="street">
+            <Col sm={2}/>
+            <Form.Label className="address-label" column sm={1}>Street</Form.Label>
+            <Col sm={6}>
+              <Form.Control className="form-input" type="input" required name="street"></Form.Control>
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3" controlId="city">
+            <Col sm={2}/>
+            <Form.Label className="address-label" column sm={1}>City</Form.Label>
+            <Col sm={6}>
+              <Form.Control className="form-input" type="input" required name="city"></Form.Control>
+            </Col>
+          </Form.Group>
+          <Form.Group as={Row} className="mb-3" controlId="state">
+            <Col sm={2}/>
+            <Form.Label className="address-label" column sm={1}>State</Form.Label>
+            <Col sm={3}>
               <Form.Select required name="state">
                 <option value="" key="holder">Select Your State</option>
                 {stateOptions}
               </Form.Select>
-            </Form.Group>
+            </Col>
           </Form.Group>
           <hr/>
-          <Form.Group controlId="autodetect">
-            <Form.Label>Autodetect Location</Form.Label>
-            <Form.Check name="autodetect" ref={autodetectRef}></Form.Check>
-            <Form.Label>Current Location</Form.Label>
+          <Form.Group as={Row} controlId="autodetect" className="checkbox-row">
+            <Form.Label column xs="auto">Autodetect Location</Form.Label>
+            <Col xs="auto" className="checkbox-row">
+              <Form.Check name="autodetect" ref={autodetectRef} label="Current Location"></Form.Check>
+            </Col>
           </Form.Group>
-          <Button variant="primary" onClick={onSubmit}><i className="bi bi-search"></i>Search</Button>
-          <Button variant="outline-secondary"><i className="bi bi-list-nested"></i>Clear</Button>
+          <Button className="form-button" variant="primary" onClick={onSubmit}><i className="bi bi-search"></i>Search</Button>
+          <Button className="form-button" variant="outline-secondary"><i className="bi bi-list-nested"></i>Clear</Button>
         </Form>
       </div>
   )

@@ -1,0 +1,20 @@
+.searching-block {
+    background-color: #dedede;
+    padding: 10px 10px;
+    width: 100%;
+}
+
+.searching-form .address-label {
+    text-align: left;
+}
+
+.checkbox-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: center;
+}
+
+.form-button {
+    margin: 0 5px;
+}
