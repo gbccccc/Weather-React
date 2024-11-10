@@ -17,14 +17,14 @@ function SearchingBlock({submitCallback, clearCallback}: {
   )
 
   function onSubmit() {
-    let formData = new FormData(formRef.current as HTMLFormElement)
+    let formData = new FormData(formRef.current!)
     let addressArray = []
     let entries = Array.from(formData.entries());
     for (let entry of entries) {
       addressArray.push((entry[1] as string).replaceAll(" ", "+"))
     }
     let addressStr = addressArray.join()
-    submitCallback((autodetectRef.current as HTMLInputElement)["checked"], addressStr)
+    submitCallback(autodetectRef.current!["checked"], addressStr)
   }
 
   return (
