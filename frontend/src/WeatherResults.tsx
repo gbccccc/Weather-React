@@ -4,9 +4,10 @@ import {weatherMapping} from "./mappings";
 import "./styles/WeatherResults.css"
 import {formatDate} from "./tools";
 
-function WeatherResults({weatherStats, address}: {
+function WeatherResults({weatherStats, address, showDetailsCallback}: {
   weatherStats: WeatherApiResult,
-  address: string
+  address: string,
+  showDetailsCallback: (index: number) => void
 }) {
   const tableRows = weatherStats.forecast.data.timelines[0].intervals.map(
       (intervalStat, index) =>

@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import './styles/App.css';
 import SearchingBlock from "./SearchingBlock";
-import {Nav, Tab} from "react-bootstrap";
+import {Carousel, Nav, Tab} from "react-bootstrap";
 import WeatherResults from "./WeatherResults";
 import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "./styles/interfaces";
+import {CarouselRef} from "react-bootstrap/Carousel";
 
 function App() {
   const ipInfoKey = "63511c0996acf1"
   const googleApiKey = "AIzaSyAG1FPkDpKn_pC2Kr9-hgNzodkHb9hyY8E"
+
+  const carouselRef = useRef<CarouselRef>(null)
 
   const [address, setAddress] = useState("")
   const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
@@ -60,6 +63,14 @@ function App() {
     setAddress(address)
   }
 
+  function showDetails(index: number) {
+    carouselRef.current!.next()
+  }
+
+  function showResults() {
+    carouselRef.current!.prev()
+  }
+
   return (
       <div className="App">
         <SearchingBlock submitCallback={submitAddress} clearCallback={() => {
@@ -76,7 +87,14 @@ function App() {
           </Nav>
           <Tab.Content>
             <Tab.Pane eventKey="results">
-              <WeatherResults weatherStats={weatherStats} address={address}/>
+              <Carousel controls={false} interval={null} ref={carouselRef}>
+                <Carousel.Item>
+                  <WeatherResults weatherStats={weatherStats} address={address} showDetailsCallback={showDetails}/>
+                </Carousel.Item>
+                <Carousel.Item>
+                  details
+                </Carousel.Item>
+              </Carousel>
             </Tab.Pane>
             <Tab.Pane eventKey="favorites">Favorites</Tab.Pane>
           </Tab.Content>
