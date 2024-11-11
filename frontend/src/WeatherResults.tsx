@@ -12,7 +12,7 @@ function WeatherResults({weatherStats, address}: {
       (intervalStat, index) =>
           <tr>
             <td>{index + 1}</td>
-            <td>{formatDate(new Date(intervalStat.startTime))}</td>
+            <td><a role="button" className="a:link">{formatDate(new Date(intervalStat.startTime))}</a></td>
             <td>
               <img className="table-status-icon"
                    src={require(`assets/images/weather-symbols/${weatherMapping[intervalStat.values.weatherCode as keyof typeof weatherMapping].iconName}`)}
@@ -27,7 +27,8 @@ function WeatherResults({weatherStats, address}: {
 
   return (
       <div className="weather-results">
-        <Table striped bordered hover className="mt-3 weather-results-table">
+        <h3>Forecast at {address}</h3>
+        <Table bordered={false} hover className="mt-3 weather-results-table">
           <thead>
           <tr>
             <th>#</th>
