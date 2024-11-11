@@ -3,7 +3,7 @@ import './styles/App.css';
 import SearchingBlock from "components/SearchingBlock";
 import {Carousel, Nav, Tab} from "react-bootstrap";
 import WeatherResults from "components/WeatherResults";
-import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "scripts/interfaces";
+import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
     "forecast": new EmptyWeatherStats(),
     "hourly": new EmptyWeatherStats()
   })
+  const [detailIndex, setDetailIndex] = useState(0)
 
   function onClear() {
 
@@ -64,6 +65,7 @@ function App() {
   }
 
   function showDetails(index: number) {
+    setDetailIndex(index)
     carouselRef.current!.next()
   }
 
@@ -92,7 +94,7 @@ function App() {
                   <WeatherResults weatherStats={weatherStats} address={address} showDetailsCallback={showDetails}/>
                 </Carousel.Item>
                 <Carousel.Item>
-                  details
+                  {JSON.stringify(weatherStats.forecast.data.timelines[0].intervals[detailIndex])}
                 </Carousel.Item>
               </Carousel>
             </Tab.Pane>

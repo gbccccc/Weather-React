@@ -1,4 +1,4 @@
-export interface IntervalStats {
+export interface DetailStats {
   "startTime": string,
   "values": {
     "humidity": number,
@@ -20,7 +20,7 @@ export interface WeatherStats {
       "timestep": string,
       "endTime": string,
       "startTime": string,
-      "intervals": IntervalStats[]
+      "intervals": DetailStats[]
     }[]
   }
 }

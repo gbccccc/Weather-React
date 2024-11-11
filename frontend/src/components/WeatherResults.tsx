@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import {WeatherApiResult, WeatherStats} from "scripts/interfaces";
+import {WeatherApiResult, WeatherStats} from "scripts/types";
 import {weatherMapping} from "scripts/mappings";
 import "styles/WeatherResults.css"
 import {formatDate} from "scripts/tools";
@@ -13,7 +13,8 @@ function WeatherResults({weatherStats, address, showDetailsCallback}: {
       (intervalStat, index) =>
           <tr>
             <td>{index + 1}</td>
-            <td><a role="button" className="a:link">{formatDate(new Date(intervalStat.startTime))}</a></td>
+            <td><a role="button" className="a:link"
+                   onClick={() => showDetailsCallback(index)}>{formatDate(new Date(intervalStat.startTime))}</a></td>
             <td>
               <img className="table-status-icon"
                    src={require(`assets/images/weather-symbols/${weatherMapping[intervalStat.values.weatherCode as keyof typeof weatherMapping].iconName}`)}
