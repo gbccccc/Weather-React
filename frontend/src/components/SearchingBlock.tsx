@@ -1,5 +1,5 @@
-import "styles/SearchingBlock.css"
-import stateMappingJson from "assets/jsons/state-mapping.json"
+import "src/styles/SearchingBlock.css"
+import stateMappingJson from "src/assets/jsons/state-mapping.json"
 import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,8 +9,8 @@ function SearchingBlock({submitCallback, clearCallback}: {
   submitCallback: (needAutodetect: boolean, formData: string) => void,
   clearCallback: () => void
 }) {
-  let formRef = useRef<HTMLFormElement>(null)
-  let autodetectRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const autodetectRef = useRef<HTMLInputElement>(null)
 
   const [needAutodetect, setNeedAutodetect] = useState(false)
   const [entryValidated, setEntryValidated] = useState({
@@ -38,14 +38,14 @@ function SearchingBlock({submitCallback, clearCallback}: {
       return
     }
 
-    let formData = new FormData(formRef.current!)
+    const formData = new FormData(formRef.current!)
 
-    let addressArray = []
-    let entries = Array.from(formData.entries());
-    for (let entry of entries) {
+    const addressArray = []
+    const entries = Array.from(formData.entries());
+    for (const entry of entries) {
       addressArray.push((entry[1] as string).replaceAll(" ", "+"))
     }
-    let addressStr = addressArray.join()
+    const addressStr = addressArray.join()
     submitCallback(needAutodetect, addressStr)
   }
 

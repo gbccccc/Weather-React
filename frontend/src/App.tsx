@@ -1,9 +1,9 @@
-import React, {useRef, useState} from 'react';
-import './styles/App.css';
-import SearchingBlock from "components/SearchingBlock";
+import {useRef, useState} from 'react';
 import {Carousel, Nav, Tab} from "react-bootstrap";
-import WeatherResults from "components/WeatherResults";
-import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "scripts/types";
+import 'src/styles/App.css';
+import SearchingBlock from "src/components/SearchingBlock";
+import WeatherResults from "src/components/WeatherResults";
+import {EmptyWeatherStats, WeatherApiResult} from "src/scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
 
 function App() {
@@ -31,9 +31,9 @@ function App() {
   function submitAddress(needAutodetect: boolean, address: string) {
     if (needAutodetect) {
       fetch(`https://ipinfo.io/?token=${ipInfoKey}`).then(res => res.json()).then(resJson1 => {
-        let locArray = resJson1.loc.split(",")
+        const locArray = resJson1.loc.split(",")
 
-        fetch(`/weather?lat=${parseInt(locArray[0])}&lng=${parseInt(locArray[1])}`)
+        fetch(`/api/weather?lat=${parseInt(locArray[0])}&lng=${parseInt(locArray[1])}`)
             .then(res2 => res2.text())
             .then(res2 => {
               handleWeatherStats(JSON.parse(res2), `${resJson1.city}, ${resJson1.region}, ${resJson1.country}`)
@@ -49,8 +49,8 @@ function App() {
               return
             }
 
-            let location = resJson1.results[0].geometry.location
-            fetch(`/weather?lat=${location.lat}&lng=${location.lng}`)
+            const location = resJson1.results[0].geometry.location
+            fetch(`/api/weather?lat=${location.lat}&lng=${location.lng}`)
                 .then(res => res.json())
                 .then(resJson2 => {
                   handleWeatherStats(resJson2, resJson1.results[0].formatted_address)
@@ -69,9 +69,9 @@ function App() {
     carouselRef.current!.next()
   }
 
-  function showResults() {
-    carouselRef.current!.prev()
-  }
+  // function showResults() {
+  //   carouselRef.current!.prev()
+  // }
 
   return (
       <div className="App">

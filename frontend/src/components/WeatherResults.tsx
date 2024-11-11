@@ -1,8 +1,8 @@
 import Table from 'react-bootstrap/Table';
-import {WeatherApiResult, WeatherStats} from "scripts/types";
-import {weatherMapping} from "scripts/mappings";
-import "styles/WeatherResults.css"
-import {formatDate} from "scripts/tools";
+import {WeatherApiResult} from "src/scripts/types";
+import {weatherMapping} from "src/scripts/mappings";
+import "src/styles/WeatherResults.css"
+import {formatDate} from "src/scripts/tools";
 
 function WeatherResults({weatherStats, address, showDetailsCallback}: {
   weatherStats: WeatherApiResult,
@@ -10,20 +10,20 @@ function WeatherResults({weatherStats, address, showDetailsCallback}: {
   showDetailsCallback: (index: number) => void
 }) {
   const tableRows = weatherStats.forecast.data.timelines[0].intervals.map(
-      (intervalStat, index) =>
-          <tr>
+      (detailStat, index) =>
+          <tr key={index}>
             <td>{index + 1}</td>
             <td><a role="button" className="a:link"
-                   onClick={() => showDetailsCallback(index)}>{formatDate(new Date(intervalStat.startTime))}</a></td>
+                   onClick={() => showDetailsCallback(index)}>{formatDate(new Date(detailStat.startTime))}</a></td>
             <td>
               <img className="table-status-icon"
-                   src={require(`assets/images/weather-symbols/${weatherMapping[intervalStat.values.weatherCode as keyof typeof weatherMapping].iconName}`)}
-                   alt={weatherMapping[intervalStat.values.weatherCode as keyof typeof weatherMapping].iconName}/>
-              {weatherMapping[intervalStat.values.weatherCode as keyof typeof weatherMapping].description}
+                   src={`src/assets/images/weather-symbols/${weatherMapping[(detailStat.values.weatherCode as keyof typeof weatherMapping)].iconName}`}
+                   alt={weatherMapping[detailStat.values.weatherCode as keyof typeof weatherMapping].iconName}/>
+              {weatherMapping[detailStat.values.weatherCode as keyof typeof weatherMapping].description}
             </td>
-            <td>{intervalStat.values.temperatureMax}</td>
-            <td>{intervalStat.values.temperatureMax}</td>
-            <td>{intervalStat.values.windSpeed}</td>
+            <td>{detailStat.values.temperatureMax}</td>
+            <td>{detailStat.values.temperatureMin}</td>
+            <td>{detailStat.values.windSpeed}</td>
           </tr>
   )
 
