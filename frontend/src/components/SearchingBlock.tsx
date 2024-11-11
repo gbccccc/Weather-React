@@ -13,7 +13,6 @@ function SearchingBlock({submitCallback, clearCallback}: {
   let autodetectRef = useRef<HTMLInputElement>(null)
 
   const [needAutodetect, setNeedAutodetect] = useState(false)
-  const [validated, setValidated] = useState(false);
   const [entryValidated, setEntryValidated] = useState({
     "street": false,
     "city": false,
@@ -35,7 +34,6 @@ function SearchingBlock({submitCallback, clearCallback}: {
       return
     }
 
-    setValidated(true)
     if (!formRef.current!.checkValidity()) {
       return
     }
@@ -64,7 +62,11 @@ function SearchingBlock({submitCallback, clearCallback}: {
   }
 
   function onAutodetectChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setValidated(false)
+    setEntryValidated({
+      "street": false,
+      "city": false,
+      "state": false
+    })
     setNeedAutodetect(e.target.checked)
   }
 
@@ -73,7 +75,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
   }
 
   function isInvalidFeedbackShown(name: string) {
-    return !needAutodetect && (validated || entryValidated[name as keyof typeof entryValidated]) && isEntryInvalid(name)
+    return !needAutodetect && entryValidated[name as keyof typeof entryValidated] && isEntryInvalid(name)
   }
 
   function isSubmitDisabled() {
