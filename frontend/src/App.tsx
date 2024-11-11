@@ -91,7 +91,7 @@ function App() {
           </Nav>
           <Tab.Content>
             <Tab.Pane eventKey="results">
-              <Carousel controls={false} interval={null} ref={carouselRef}>
+              <Carousel controls={false} indicators={false} interval={null} ref={carouselRef}>
                 <Carousel.Item>
                   <WeatherResults weatherApiResult={weatherStats} address={address} showDetailsCallback={showDetails}/>
                 </Carousel.Item>
