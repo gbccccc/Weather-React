@@ -64,8 +64,10 @@ function App() {
     setAddress(address)
   }
 
-  function showDetails(index: number) {
-    setDetailIndex(index)
+  function showDetails(index?: number) {
+    if (typeof index !== 'undefined') {
+      setDetailIndex(index)
+    }
     carouselRef.current!.next()
   }
 
