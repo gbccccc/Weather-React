@@ -1,11 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './styles/App.css';
 import SearchingBlock from "./SearchingBlock";
+import {Nav, Tab} from "react-bootstrap";
+import WeatherResults from "./WeatherResults";
+import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "./styles/interfaces";
 
 function App() {
   const ipInfoKey = "63511c0996acf1"
   const googleApiKey = "AIzaSyAG1FPkDpKn_pC2Kr9-hgNzodkHb9hyY8E"
-  const backendHost = "127.0.0.1:8081"
+
+  const [address, setAddress] = useState("")
+  const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
+    "current": new EmptyWeatherStats(),
+    "forecast": new EmptyWeatherStats(),
+    "hourly": new EmptyWeatherStats()
+  })
 
   function onClear() {
 
@@ -47,8 +56,8 @@ function App() {
   }
 
   function handleWeatherStats(response: object, address: string) {
-    console.log(response)
-    console.log(address)
+    setWeatherStats(response as typeof weatherStats)
+    setAddress(address)
   }
 
   return (
@@ -56,6 +65,22 @@ function App() {
         <SearchingBlock submitCallback={submitAddress} clearCallback={() => {
           return
         }}/>
+        <Tab.Container id="left-tabs-example" defaultActiveKey="results">
+          <Nav variant="pills" className="justify-content-center mt-3">
+            <Nav.Item>
+              <Nav.Link eventKey="results">Results</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="favorites">Favorites</Nav.Link>
+            </Nav.Item>
+          </Nav>
+          <Tab.Content>
+            <Tab.Pane eventKey="results">
+              <WeatherResults weatherStats={weatherStats} address={address}/>
+            </Tab.Pane>
+            <Tab.Pane eventKey="favorites">Favorites</Tab.Pane>
+          </Tab.Content>
+        </Tab.Container>
       </div>
   );
 }
