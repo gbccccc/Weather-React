@@ -14,7 +14,6 @@ export default defineConfig({
       "/api": {
         "target": "https://expressjs-441406.uc.r.appspot.com",
         "changeOrigin": true,
-        "rewrite": (path) => path.replace(/^\/api/, ""),
       }
     }
   }

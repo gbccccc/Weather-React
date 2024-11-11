@@ -1,7 +1,6 @@
 {
   "name": "csci571-weather-react",
   "private": true,
-  "proxy": "https://expressjs-441406.uc.r.appspot.com/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
