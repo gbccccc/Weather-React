@@ -17,7 +17,7 @@ function WeatherResults({weatherStats, address, showDetailsCallback}: {
                    onClick={() => showDetailsCallback(index)}>{formatDate(new Date(detailStat.startTime))}</a></td>
             <td>
               <img className="table-status-icon"
-                   src={`src/assets/images/weather-symbols/${weatherMapping[(detailStat.values.weatherCode as keyof typeof weatherMapping)].iconName}`}
+                   src={`/images/weather-symbols/${weatherMapping[(detailStat.values.weatherCode as keyof typeof weatherMapping)].iconName}`}
                    alt={weatherMapping[detailStat.values.weatherCode as keyof typeof weatherMapping].iconName}/>
               {weatherMapping[detailStat.values.weatherCode as keyof typeof weatherMapping].description}
             </td>

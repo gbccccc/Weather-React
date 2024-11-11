@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        "target": "https://expressjs-441406.uc.r.appspot.com",
+        "target": "https://expressjs-441412.uc.r.appspot.com",
         "changeOrigin": true,
       }
     }
