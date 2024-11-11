@@ -8,7 +8,7 @@
     width: 100%;
 }
 
-.table-status-icon{
+.table-status-icon {
     width: 15%;
     min-width: 20px;
     vertical-align: middle;
@@ -17,4 +17,12 @@
 
 .results-buttons {
     display: flex;
+}
+
+.date-col {
+    width: 35%;
+}
+
+.date-button {
+    text-align: left;
 }

@@ -14,7 +14,7 @@ function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
       (detailStats, index) =>
           <tr key={index}>
             <td>{index + 1}</td>
-            <td><Button variant="link"
+            <td><Button variant="link" className="date-button"
                         onClick={() => showDetailsCallback(index)}>{formatDate(new Date(detailStats.startTime))}</Button>
             </td>
             <td>
@@ -42,7 +42,7 @@ function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
               <thead>
               <tr>
                 <th>#</th>
-                <th>Date</th>
+                <th className="date-col">Date</th>
                 <th>Status</th>
                 <th>Temp. High(&deg;F)</th>
                 <th>Temp. Low(&deg;F)</th>
