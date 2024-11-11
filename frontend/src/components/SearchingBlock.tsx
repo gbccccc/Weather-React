@@ -1,5 +1,5 @@
 import "src/styles/SearchingBlock.css"
-import stateMappingJson from "src/assets/jsons/state-mapping.json"
+import {stateMapping} from "src/scripts/mappings.ts"
 import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,7 +24,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
     "state": ""
   })
 
-  const stateOptions = Object.entries(stateMappingJson).map(
+  const stateOptions = Object.entries(stateMapping).map(
       ([key, value]) => <option value={key} key={key}>{value}</option>
   )
 
