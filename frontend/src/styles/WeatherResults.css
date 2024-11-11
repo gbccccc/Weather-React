@@ -1,0 +1,14 @@
+.weather-results {
+    width: 100%;
+}
+
+.weather-results-table {
+    width: 100%;
+}
+
+.table-status-icon{
+    width: 20%;
+    min-width: 20px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
