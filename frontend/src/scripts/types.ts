@@ -41,3 +41,19 @@ export class EmptyWeatherStats implements WeatherStats {
     }]
   }
 }
+
+export class EmptyDetailStats implements DetailStats {
+  startTime = new Date().toTimeString();
+  values = {
+    humidity: 0,
+    precipitationProbability: 0,
+    precipitationType: 0,
+    sunriseTime: "",
+    sunsetTime: "",
+    temperatureMax: 0,
+    temperatureMin: 0,
+    visibility: 0,
+    weatherCode: 1000,
+    windSpeed: 0
+  };
+}

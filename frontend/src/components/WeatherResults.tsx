@@ -11,28 +11,28 @@ function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
   showDetailsCallback: (index?: number) => void
 }) {
   const tableRows = weatherApiResult.forecast.data.timelines[0].intervals.map(
-      (detailStat, index) =>
+      (detailStats, index) =>
           <tr key={index}>
             <td>{index + 1}</td>
             <td><Button variant="link"
-                        onClick={() => showDetailsCallback(index)}>{formatDate(new Date(detailStat.startTime))}</Button>
+                        onClick={() => showDetailsCallback(index)}>{formatDate(new Date(detailStats.startTime))}</Button>
             </td>
             <td>
               <img className="table-status-icon"
-                   src={`/images/weather-symbols/${weatherMapping[(detailStat.values.weatherCode as keyof typeof weatherMapping)].iconName}`}
-                   alt={weatherMapping[detailStat.values.weatherCode as keyof typeof weatherMapping].iconName}/>
-              {weatherMapping[detailStat.values.weatherCode as keyof typeof weatherMapping].description}
+                   src={`/images/weather-symbols/${weatherMapping[(detailStats.values.weatherCode as keyof typeof weatherMapping)].iconName}`}
+                   alt={weatherMapping[detailStats.values.weatherCode as keyof typeof weatherMapping].iconName}/>
+              {weatherMapping[detailStats.values.weatherCode as keyof typeof weatherMapping].description}
             </td>
-            <td>{detailStat.values.temperatureMax}</td>
-            <td>{detailStat.values.temperatureMin}</td>
-            <td>{detailStat.values.windSpeed}</td>
+            <td>{detailStats.values.temperatureMax}</td>
+            <td>{detailStats.values.temperatureMin}</td>
+            <td>{detailStats.values.windSpeed}</td>
           </tr>
   )
 
   return (
       <div className="weather-results">
         <h3>Forecast at {address}</h3>
-        <div className="buttons justify-content-end">
+        <div className="results-buttons justify-content-end">
           <Button variant="link"
                   onClick={() => showDetailsCallback()}>Details</Button>
         </div>

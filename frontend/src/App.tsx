@@ -3,8 +3,9 @@ import {Carousel, Nav, Tab} from "react-bootstrap";
 import 'src/styles/App.css';
 import SearchingBlock from "src/components/SearchingBlock";
 import WeatherResults from "src/components/WeatherResults";
-import {EmptyWeatherStats, WeatherApiResult} from "src/scripts/types";
+import {EmptyDetailStats, EmptyWeatherStats, WeatherApiResult} from "src/scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
+import WeatherDetails from "./components/WeatherDetails.tsx";
 
 function App() {
   const ipInfoKey = "63511c0996acf1"
@@ -19,6 +20,13 @@ function App() {
     "hourly": new EmptyWeatherStats()
   })
   const [detailIndex, setDetailIndex] = useState(0)
+
+  function getDetailStats() {
+    if (weatherStats.forecast.data.timelines[0].intervals.length === 0) {
+      return new EmptyDetailStats()
+    }
+    return weatherStats.forecast.data.timelines[0].intervals[detailIndex]
+  }
 
   function onClear() {
 
@@ -71,9 +79,9 @@ function App() {
     carouselRef.current!.next()
   }
 
-  // function showResults() {
-  //   carouselRef.current!.prev()
-  // }
+  function showResults() {
+    carouselRef.current!.prev()
+  }
 
   return (
       <div className="App">
@@ -96,7 +104,7 @@ function App() {
                   <WeatherResults weatherApiResult={weatherStats} address={address} showDetailsCallback={showDetails}/>
                 </Carousel.Item>
                 <Carousel.Item>
-                  {JSON.stringify(weatherStats.forecast.data.timelines[0].intervals[detailIndex])}
+                  <WeatherDetails detailStats={getDetailStats()} showResultsCallback={showResults}></WeatherDetails>
                 </Carousel.Item>
               </Carousel>
             </Tab.Pane>
