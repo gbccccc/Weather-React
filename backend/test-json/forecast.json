@@ -1,0 +1,103 @@
+{
+    "data": {
+        "timelines": [
+            {
+                "timestep": "1d",
+                "endTime": "2024-10-19T20:00:00-07:00",
+                "startTime": "2024-10-14T20:00:00-07:00",
+                "intervals": [
+                    {
+                        "startTime": "2024-10-14T20:00:00-07:00",
+                        "values": {
+                            "humidity": 93.97,
+                            "precipitationProbability": 30,
+                            "precipitationType": 3,
+                            "sunriseTime": "2024-10-15T03:26:00Z",
+                            "sunsetTime": "2024-10-15T13:56:00Z",
+                            "temperatureMax": 39.86,
+                            "temperatureMin": 34.7,
+                            "visibility": 9.94,
+                            "weatherCode": 1001,
+                            "windSpeed": 12.74
+                        }
+                    },
+                    {
+                        "startTime": "2024-10-15T20:00:00-07:00",
+                        "values": {
+                            "humidity": 97.3,
+                            "precipitationProbability": 15,
+                            "precipitationType": 1,
+                            "sunriseTime": "2024-10-16T03:28:00Z",
+                            "sunsetTime": "2024-10-16T13:54:00Z",
+                            "temperatureMax": 45.52,
+                            "temperatureMin": 38.6,
+                            "visibility": 9.94,
+                            "weatherCode": 1001,
+                            "windSpeed": 7.06
+                        }
+                    },
+                    {
+                        "startTime": "2024-10-16T20:00:00-07:00",
+                        "values": {
+                            "humidity": 97.24,
+                            "precipitationProbability": 20,
+                            "precipitationType": 1,
+                            "sunriseTime": "2024-10-17T03:30:00Z",
+                            "sunsetTime": "2024-10-17T13:52:00Z",
+                            "temperatureMax": 42.32,
+                            "temperatureMin": 36.43,
+                            "visibility": 10.36,
+                            "weatherCode": 1001,
+                            "windSpeed": 7.77
+                        }
+                    },
+                    {
+                        "startTime": "2024-10-17T20:00:00-07:00",
+                        "values": {
+                            "humidity": 94.73,
+                            "precipitationProbability": 5,
+                            "precipitationType": 0,
+                            "sunriseTime": "2024-10-18T03:32:00Z",
+                            "sunsetTime": "2024-10-18T13:49:00Z",
+                            "temperatureMax": 45.95,
+                            "temperatureMin": 34.13,
+                            "visibility": 15,
+                            "weatherCode": 1001,
+                            "windSpeed": 6.73
+                        }
+                    },
+                    {
+                        "startTime": "2024-10-18T20:00:00-07:00",
+                        "values": {
+                            "humidity": 85.76,
+                            "precipitationProbability": 10,
+                            "precipitationType": 1,
+                            "sunriseTime": "2024-10-19T03:33:00Z",
+                            "sunsetTime": "2024-10-19T13:47:00Z",
+                            "temperatureMax": 47.58,
+                            "temperatureMin": 33.81,
+                            "visibility": 15,
+                            "weatherCode": 1001,
+                            "windSpeed": 10.5
+                        }
+                    },
+                    {
+                        "startTime": "2024-10-19T20:00:00-07:00",
+                        "values": {
+                            "humidity": 93.04,
+                            "precipitationProbability": 35,
+                            "precipitationType": 1,
+                            "sunriseTime": "2024-10-20T03:35:00Z",
+                            "sunsetTime": "2024-10-20T13:45:00Z",
+                            "temperatureMax": 46.36,
+                            "temperatureMin": 41.27,
+                            "visibility": 15,
+                            "weatherCode": 1001,
+                            "windSpeed": 13.85
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
