@@ -2,6 +2,7 @@ import Table from 'react-bootstrap/Table';
 import {WeatherApiResult, WeatherStats} from "./styles/interfaces";
 import {weatherMapping} from "./mappings";
 import "./styles/WeatherResults.css"
+import {formatDate} from "./tools";
 
 function WeatherResults({weatherStats, address}: {
   weatherStats: WeatherApiResult,
@@ -11,7 +12,7 @@ function WeatherResults({weatherStats, address}: {
       (intervalStat, index) =>
           <tr>
             <td>{index + 1}</td>
-            <td>{intervalStat.startTime}</td>
+            <td>{formatDate(new Date(intervalStat.startTime))}</td>
             <td>
               <img className="table-status-icon"
                    src={require(`assets/images/weather-symbols/${weatherMapping[intervalStat.values.weatherCode as keyof typeof weatherMapping].iconName}`)}

@@ -3,6 +3,7 @@
 }
 
 .weather-results-table {
+    text-align: left;
     width: 100%;
 }
 
