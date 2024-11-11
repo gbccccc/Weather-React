@@ -88,7 +88,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
         <Form className="searching-form" ref={formRef}>
           <Form.Group as={Row} className="mb-3" controlId="street">
             <Col sm={2}/>
-            <Form.Label className="address-label" column sm={1}>Street</Form.Label>
+            <Form.Label className="address-label" column={true} sm={1}>Street</Form.Label>
             <Col sm={6}>
               <Form.Control className="form-input" type="input" required name="street"
                             onChange={onEntryChange} onBlur={onEntryChange}
@@ -100,7 +100,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="city">
             <Col sm={2}/>
-            <Form.Label className="address-label" column sm={1}>City</Form.Label>
+            <Form.Label className="address-label" column={true} sm={1}>City</Form.Label>
             <Col sm={6}>
               <Form.Control className="form-input" type="input" required name="city"
                             onChange={onEntryChange} onBlur={onEntryChange}
@@ -112,7 +112,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="state">
             <Col sm={2}/>
-            <Form.Label className="address-label" column sm={1}>State</Form.Label>
+            <Form.Label className="address-label" column={true} sm={1}>State</Form.Label>
             <Col sm={3}>
               <Form.Select required name="state"
                            onChange={onEntryChange} onBlur={onEntryChange}
@@ -127,7 +127,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
           </Form.Group>
           <hr/>
           <Form.Group as={Row} controlId="autodetect" className="checkbox-row">
-            <Form.Label column xs="auto">Autodetect Location</Form.Label>
+            <Form.Label column={true} xs="auto">Autodetect Location</Form.Label>
             <Col xs="auto" className="checkbox-row">
               <Form.Check name="autodetect" ref={autodetectRef}
                           onChange={onAutodetectChange} label="Current Location"></Form.Check>

@@ -91,7 +91,7 @@ function App() {
             <Tab.Pane eventKey="results">
               <Carousel controls={false} interval={null} ref={carouselRef}>
                 <Carousel.Item>
-                  <WeatherResults weatherStats={weatherStats} address={address} showDetailsCallback={showDetails}/>
+                  <WeatherResults weatherApiResult={weatherStats} address={address} showDetailsCallback={showDetails}/>
                 </Carousel.Item>
                 <Carousel.Item>
                   {JSON.stringify(weatherStats.forecast.data.timelines[0].intervals[detailIndex])}
