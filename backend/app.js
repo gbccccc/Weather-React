@@ -4,12 +4,13 @@ const app = express()
 const port = process.env.PORT || 8081
 
 app.use(cors())
+app.use(express.static('dist'))
 
-app.get('/hello', (req, res) => {
+app.get('/api/hello', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/weather', (req, res) => {
+app.get('/api/weather', (req, res) => {
   console.log(req.query)
   let response = {}
   let testing = true
