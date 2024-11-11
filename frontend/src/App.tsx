@@ -1,9 +1,9 @@
 import React, {useRef, useState} from 'react';
 import './styles/App.css';
-import SearchingBlock from "./SearchingBlock";
+import SearchingBlock from "components/SearchingBlock";
 import {Carousel, Nav, Tab} from "react-bootstrap";
-import WeatherResults from "./WeatherResults";
-import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "./styles/interfaces";
+import WeatherResults from "components/WeatherResults";
+import {EmptyWeatherStats, WeatherApiResult, WeatherStats} from "scripts/interfaces";
 import {CarouselRef} from "react-bootstrap/Carousel";
 
 function App() {

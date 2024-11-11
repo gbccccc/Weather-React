@@ -4,7 +4,6 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useRef, useState} from "react";
-import {Interface} from "readline";
 
 function SearchingBlock({submitCallback, clearCallback}: {
   submitCallback: (needAutodetect: boolean, formData: string) => void,

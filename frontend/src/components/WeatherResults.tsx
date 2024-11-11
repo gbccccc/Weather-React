@@ -1,8 +1,8 @@
 import Table from 'react-bootstrap/Table';
-import {WeatherApiResult, WeatherStats} from "./styles/interfaces";
-import {weatherMapping} from "./mappings";
-import "./styles/WeatherResults.css"
-import {formatDate} from "./tools";
+import {WeatherApiResult, WeatherStats} from "scripts/interfaces";
+import {weatherMapping} from "scripts/mappings";
+import "styles/WeatherResults.css"
+import {formatDate} from "scripts/tools";
 
 function WeatherResults({weatherStats, address, showDetailsCallback}: {
   weatherStats: WeatherApiResult,
