@@ -5,7 +5,6 @@ import "src/styles/WeatherResults.css"
 import {formatDate} from "src/scripts/tools";
 import {Button, Tab, Tabs} from "react-bootstrap";
 import Meteogram from "./Meteogram.tsx";
-import weatherDetails from "./WeatherDetails.tsx";
 import TemperatureMinMaxChart from "./TemperatureMinMaxChart.tsx";
 import {useEffect} from "react";
 

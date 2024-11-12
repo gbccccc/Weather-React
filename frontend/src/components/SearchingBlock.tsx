@@ -18,7 +18,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
     "city": false,
     "state": false
   })
-  const [entryValue, setEntryValue] = useState({
+  const [entryValue, setEntriesValue] = useState({
     "street": "",
     "city": "",
     "state": ""
@@ -28,7 +28,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
       ([key, value]) => <option value={key} key={key}>{value}</option>
   )
 
-  function onSubmit() {
+  function submit() {
     if (needAutodetect) {
       submitCallback(needAutodetect, "")
       return
@@ -49,13 +49,30 @@ function SearchingBlock({submitCallback, clearCallback}: {
     submitCallback(needAutodetect, addressStr)
   }
 
+  function clear() {
+    setEntryValidated({
+      "street": false,
+      "city": false,
+      "state": false
+    })
+    formRef.current!.reset()
+    setEntriesValue({
+      "street": "",
+      "city": "",
+      "state": ""
+    })
+    autodetectRef.current!.checked = false
+    setNeedAutodetect(false)
+    clearCallback()
+  }
+
   function onEntryChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     const {name, value} = event.target
     setEntryValidated(prevState => ({
       ...prevState,
       [name]: true
     }))
-    setEntryValue(prevState => ({
+    setEntriesValue(prevState => ({
       ...prevState,
       [name]: value
     }))
@@ -67,6 +84,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
       "city": false,
       "state": false
     })
+    console.log(e.target.checked)
     setNeedAutodetect(e.target.checked)
   }
 
@@ -133,9 +151,9 @@ function SearchingBlock({submitCallback, clearCallback}: {
                           onChange={onAutodetectChange} label="Current Location"></Form.Check>
             </Col>
           </Form.Group>
-          <Button className="form-button" variant="primary" disabled={isSubmitDisabled()} onClick={onSubmit}><i
+          <Button className="form-button" variant="primary" disabled={isSubmitDisabled()} onClick={submit}><i
               className="bi bi-search"></i>Search</Button>
-          <Button className="form-button" variant="outline-secondary"><i
+          <Button className="form-button" variant="outline-secondary" onClick={clear}><i
               className="bi bi-list-nested"></i>Clear</Button>
         </Form>
       </div>

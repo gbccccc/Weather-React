@@ -35,7 +35,7 @@ function App() {
   }
 
   function onClear() {
-
+    resultsRef.current!.style.display = "none"
   }
 
   function noResult() {
@@ -103,15 +103,13 @@ function App() {
     carouselRef.current!.next()
   }
 
-  function showResults() {
+  function showResultsTable() {
     carouselRef.current!.prev()
   }
 
   return (
       <div className="App">
-        <SearchingBlock submitCallback={submitAddress} clearCallback={() => {
-          return
-        }}/>
+        <SearchingBlock submitCallback={submitAddress} clearCallback={onClear}/>
         <Tab.Container id="left-tabs-example" defaultActiveKey="results">
           <Nav variant="pills" className="justify-content-center mt-3">
             <Nav.Item>
@@ -134,7 +132,7 @@ function App() {
                   </Carousel.Item>
                   <Carousel.Item>
                     <WeatherDetails detailStats={getDetailStats()} geoLocation={geoLocation}
-                                    showResultsCallback={showResults}></WeatherDetails>
+                                    showResultsCallback={showResultsTable}></WeatherDetails>
                   </Carousel.Item>
                 </Carousel>
               </div>
