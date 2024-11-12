@@ -8,9 +8,11 @@ export interface DetailStats {
     "sunsetTime": string,
     "temperatureMax": number,
     "temperatureMin": number,
+    "temperatureApparent": number,
     "visibility": number,
     "weatherCode": number,
     "windSpeed": number
+    "cloudCover": number
   }
 }
 
@@ -52,8 +54,10 @@ export class EmptyDetailStats implements DetailStats {
     sunsetTime: "",
     temperatureMax: 0,
     temperatureMin: 0,
+    temperatureApparent: 0,
     visibility: 0,
     weatherCode: 1000,
-    windSpeed: 0
+    windSpeed: 0,
+    cloudCover: 0
   };
 }
