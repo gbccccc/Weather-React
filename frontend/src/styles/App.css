@@ -5,3 +5,16 @@
     width: 100%;
     justify-self: center;
 }
+
+.progress-bar-div {
+    display: none;
+}
+
+.results-div {
+    display: none;
+}
+
+.custom-progress-bar {
+    justify-self: center;
+    width: 70%;
+}

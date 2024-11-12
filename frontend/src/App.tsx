@@ -1,9 +1,9 @@
 import {useRef, useState} from 'react';
-import {Carousel, Nav, Tab} from "react-bootstrap";
+import {Carousel, Nav, ProgressBar, Tab} from "react-bootstrap";
 import 'src/styles/App.css';
 import SearchingBlock from "src/components/SearchingBlock";
 import WeatherResults from "src/components/WeatherResults";
-import {EmptyDetailStats, EmptyWeatherStats, GeoLocation, WeatherApiResult} from "src/scripts/types";
+import {EmptyDetailStats, EmptyWeatherStats, GeoLocation, WeatherApiResult, WeatherStats} from "src/scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
 import WeatherDetails from "./components/WeatherDetails.tsx";
 
@@ -12,12 +12,15 @@ function App() {
   const googleApiKey = "AIzaSyAG1FPkDpKn_pC2Kr9-hgNzodkHb9hyY8E"
 
   const carouselRef = useRef<CarouselRef>(null)
+  const progressBarRef = useRef<HTMLDivElement>(null)
+  const resultsRef = useRef<HTMLDivElement>(null)
 
   const [address, setAddress] = useState("")
   const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
     forecast: new EmptyWeatherStats(),
     hourly: new EmptyWeatherStats()
   })
+  const [weatherStatsReady, setWeatherStatsReady] = useState<boolean>(false)
   const [detailIndex, setDetailIndex] = useState(0)
   const [geoLocation, setGeoLocation] = useState<GeoLocation>({
     latitude: 0,
@@ -39,7 +42,16 @@ function App() {
 
   }
 
+  function onResultsReady() {
+    if (weatherStatsReady) {
+      progressBarRef.current!.style.display = "none"
+      resultsRef.current!.style.display = "block"
+    }
+  }
+
   function submitAddress(needAutodetect: boolean, address: string) {
+    resultsRef.current!.style.display = "none"
+    progressBarRef.current!.style.display = "block"
     if (needAutodetect) {
       fetch(`https://ipinfo.io/?token=${ipInfoKey}`).then(res => res.json()).then(resJson1 => {
         const locArray = resJson1.loc.split(",")
@@ -79,6 +91,7 @@ function App() {
   }
 
   function handleWeatherStats(response: object, address: string) {
+    setWeatherStatsReady(true)
     setWeatherStats(response as typeof weatherStats)
     setAddress(address)
   }
@@ -110,15 +123,21 @@ function App() {
           </Nav>
           <Tab.Content>
             <Tab.Pane eventKey="results">
-              <Carousel controls={false} indicators={false} interval={null} ref={carouselRef} touch={false}>
-                <Carousel.Item>
-                  <WeatherResults weatherApiResult={weatherStats} address={address} showDetailsCallback={showDetails}/>
-                </Carousel.Item>
-                <Carousel.Item>
-                  <WeatherDetails detailStats={getDetailStats()} geoLocation={geoLocation}
-                                  showResultsCallback={showResults}></WeatherDetails>
-                </Carousel.Item>
-              </Carousel>
+              <div ref={progressBarRef} className="progress-bar-div">
+                <ProgressBar animated now={50} className="mt-4 custom-progress-bar"/>
+              </div>
+              <div ref={resultsRef} className="results-div">
+                <Carousel controls={false} indicators={false} interval={null} ref={carouselRef} touch={false}>
+                  <Carousel.Item>
+                    <WeatherResults weatherApiResult={weatherStats} address={address}
+                                    readyCallback={onResultsReady} showDetailsCallback={showDetails}/>
+                  </Carousel.Item>
+                  <Carousel.Item>
+                    <WeatherDetails detailStats={getDetailStats()} geoLocation={geoLocation}
+                                    showResultsCallback={showResults}></WeatherDetails>
+                  </Carousel.Item>
+                </Carousel>
+              </div>
             </Tab.Pane>
             <Tab.Pane eventKey="favorites">Favorites</Tab.Pane>
           </Tab.Content>

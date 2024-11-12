@@ -7,12 +7,18 @@ import {Button, Tab, Tabs} from "react-bootstrap";
 import Meteogram from "./Meteogram.tsx";
 import weatherDetails from "./WeatherDetails.tsx";
 import TemperatureMinMaxChart from "./TemperatureMinMaxChart.tsx";
+import {useEffect} from "react";
 
-function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
+function WeatherResults({weatherApiResult, address, readyCallback, showDetailsCallback}: {
   weatherApiResult: WeatherApiResult,
   address: string,
+  readyCallback: () => void
   showDetailsCallback: (index?: number) => void
 }) {
+  useEffect(() => {
+    readyCallback()
+  }, [weatherApiResult, address]);
+  
   const tableRows = weatherApiResult.forecast.data.timelines[0].intervals.map(
       (detailStats, index) =>
           <tr key={index}>
@@ -58,7 +64,8 @@ function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
             </Table>
           </Tab>
           <Tab eventKey="temp-chart" title="Daily Temp. Chart">
-            <TemperatureMinMaxChart weatherDetails={weatherApiResult.forecast.data.timelines[0].intervals}></TemperatureMinMaxChart>
+            <TemperatureMinMaxChart
+                weatherDetails={weatherApiResult.forecast.data.timelines[0].intervals}></TemperatureMinMaxChart>
           </Tab>
           <Tab eventKey="meteogram" title="Meteogram">
             <Meteogram hourly={weatherApiResult.hourly.data.timelines[0].intervals}></Meteogram>
