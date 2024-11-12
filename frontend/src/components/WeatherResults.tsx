@@ -4,6 +4,9 @@ import {weatherMapping} from "src/scripts/mappings";
 import "src/styles/WeatherResults.css"
 import {formatDate} from "src/scripts/tools";
 import {Button, Tab, Tabs} from "react-bootstrap";
+import Meteogram from "./Meteogram.tsx";
+import weatherDetails from "./WeatherDetails.tsx";
+import TemperatureMinMaxChart from "./TemperatureMinMaxChart.tsx";
 
 function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
   weatherApiResult: WeatherApiResult,
@@ -55,8 +58,10 @@ function WeatherResults({weatherApiResult, address, showDetailsCallback}: {
             </Table>
           </Tab>
           <Tab eventKey="temp-chart" title="Daily Temp. Chart">
+            <TemperatureMinMaxChart weatherDetails={weatherApiResult.forecast.data.timelines[0].intervals}></TemperatureMinMaxChart>
           </Tab>
           <Tab eventKey="meteogram" title="Meteogram">
+            <Meteogram hourly={weatherApiResult.hourly.data.timelines[0].intervals}></Meteogram>
           </Tab>
         </Tabs>
       </div>

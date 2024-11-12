@@ -16,6 +16,18 @@ export interface DetailStats {
   }
 }
 
+export interface HourlyDetailStats {
+  startTime: string,
+  values: {
+    humidity: number,
+    pressureSeaLevel: number,
+    temperature: number,
+    weatherCode: number,
+    windDirection: number,
+    windSpeed: number
+  }
+}
+
 export interface WeatherStats {
   data: {
     timelines: {
@@ -27,9 +39,20 @@ export interface WeatherStats {
   }
 }
 
+export interface HourlyStats {
+  data: {
+    timelines: {
+      timestep: string,
+      endTime: string,
+      startTime: string,
+      intervals: HourlyDetailStats[]
+    }[]
+  }
+}
+
 export interface WeatherApiResult {
   forecast: WeatherStats,
-  hourly: WeatherStats,
+  hourly: HourlyStats,
 }
 
 export class EmptyWeatherStats implements WeatherStats {
