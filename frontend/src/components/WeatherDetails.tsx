@@ -1,13 +1,44 @@
 import "src/styles/WeatherDetails.css"
-import {DetailStats} from "../scripts/types.ts";
+import {DetailStats, GeoLocation} from "../scripts/types.ts";
 import {formatDate, formatTime} from "../scripts/tools.ts";
 import {Button, Table} from "react-bootstrap";
 import {weatherMapping} from "../scripts/mappings.ts";
+import {useEffect, useRef} from "react";
+import {Loader} from "@googlemaps/js-api-loader";
 
-function WeatherDetails({detailStats, showResultsCallback}: {
+function WeatherDetails({detailStats, geoLocation, showResultsCallback}: {
   detailStats: DetailStats,
+  geoLocation: GeoLocation,
   showResultsCallback: () => void
 }) {
+  const mapKey = "AIzaSyByDQRQ_wWMJV-Jpptl_zPP5y4trzRNzQo"
+  const mapDivRef = useRef<HTMLDivElement>(null);
+
+  function initMap() {
+    const loader = new Loader({
+      apiKey: mapKey,
+      version: "weekly",
+      libraries: ["marker"]
+    });
+
+    loader.load().then(async () => {
+      const {Map} = await google.maps.importLibrary("maps") as google.maps.MapsLibrary;
+      const {AdvancedMarkerElement} = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+      let map = new Map(mapDivRef.current!, {
+        center: {lat: geoLocation.latitude, lng: geoLocation.longitude},
+        zoom: 15,
+        mapId: "d39bdfb61a2e9f85"
+      });
+      new AdvancedMarkerElement({
+        map, position: {lat: geoLocation.latitude, lng: geoLocation.longitude},
+      });
+    });
+  }
+
+  useEffect(() => {
+    initMap()
+  }, [geoLocation]);
+
   return (
       <div className="weather-details">
         <h3>{formatDate(new Date(detailStats.startTime))}</h3>
@@ -15,7 +46,7 @@ function WeatherDetails({detailStats, showResultsCallback}: {
           <Button variant="outline-secondary" onClick={showResultsCallback}>List</Button>
           <Button variant="outline-secondary">X</Button>
         </div>
-        <Table bordered={false} striped hover className="mt-3">
+        <Table bordered={false} striped hover className="mt-3 weather-details-table">
           <tbody>
           <tr>
             <td>Status</td>
@@ -59,6 +90,7 @@ function WeatherDetails({detailStats, showResultsCallback}: {
           </tr>
           </tbody>
         </Table>
+        <div ref={mapDivRef} className="map-div"></div>
       </div>
   )
 }

@@ -1,35 +1,35 @@
 export interface DetailStats {
-  "startTime": string,
-  "values": {
-    "humidity": number,
-    "precipitationProbability": number,
-    "precipitationType": number,
-    "sunriseTime": string,
-    "sunsetTime": string,
-    "temperatureMax": number,
-    "temperatureMin": number,
-    "temperatureApparent": number,
-    "visibility": number,
-    "weatherCode": number,
-    "windSpeed": number
-    "cloudCover": number
+  startTime: string,
+  values: {
+    humidity: number,
+    precipitationProbability: number,
+    precipitationType: number,
+    sunriseTime: string,
+    sunsetTime: string,
+    temperatureMax: number,
+    temperatureMin: number,
+    temperatureApparent: number,
+    visibility: number,
+    weatherCode: number,
+    windSpeed: number
+    cloudCover: number
   }
 }
 
 export interface WeatherStats {
-  "data": {
-    "timelines": {
-      "timestep": string,
-      "endTime": string,
-      "startTime": string,
-      "intervals": DetailStats[]
+  data: {
+    timelines: {
+      timestep: string,
+      endTime: string,
+      startTime: string,
+      intervals: DetailStats[]
     }[]
   }
 }
 
 export interface WeatherApiResult {
-  "forecast": WeatherStats,
-  "hourly": WeatherStats,
+  forecast: WeatherStats,
+  hourly: WeatherStats,
 }
 
 export class EmptyWeatherStats implements WeatherStats {
@@ -41,6 +41,11 @@ export class EmptyWeatherStats implements WeatherStats {
       intervals: []
     }]
   }
+}
+
+export interface GeoLocation {
+  latitude: number,
+  longitude: number
 }
 
 export class EmptyDetailStats implements DetailStats {

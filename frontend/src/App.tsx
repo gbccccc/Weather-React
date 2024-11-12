@@ -3,7 +3,7 @@ import {Carousel, Nav, Tab} from "react-bootstrap";
 import 'src/styles/App.css';
 import SearchingBlock from "src/components/SearchingBlock";
 import WeatherResults from "src/components/WeatherResults";
-import {EmptyDetailStats, EmptyWeatherStats, WeatherApiResult} from "src/scripts/types";
+import {EmptyDetailStats, EmptyWeatherStats, GeoLocation, WeatherApiResult} from "src/scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
 import WeatherDetails from "./components/WeatherDetails.tsx";
 
@@ -15,10 +15,14 @@ function App() {
 
   const [address, setAddress] = useState("")
   const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
-    "forecast": new EmptyWeatherStats(),
-    "hourly": new EmptyWeatherStats()
+    forecast: new EmptyWeatherStats(),
+    hourly: new EmptyWeatherStats()
   })
   const [detailIndex, setDetailIndex] = useState(0)
+  const [geoLocation, setGeoLocation] = useState<GeoLocation>({
+    latitude: 0,
+    longitude: 0
+  })
 
   function getDetailStats() {
     if (weatherStats.forecast.data.timelines[0].intervals.length === 0) {
@@ -40,7 +44,11 @@ function App() {
       fetch(`https://ipinfo.io/?token=${ipInfoKey}`).then(res => res.json()).then(resJson1 => {
         const locArray = resJson1.loc.split(",")
 
-        fetch(`/api/weather?lat=${parseInt(locArray[0])}&lng=${parseInt(locArray[1])}`)
+        setGeoLocation({
+          latitude: parseInt(locArray[0]),
+          longitude: parseInt(locArray[1])
+        })
+        fetch(`/api/weather?lat=${geoLocation.latitude}&lng=${geoLocation.longitude}`)
             .then(res2 => res2.text())
             .then(res2 => {
               handleWeatherStats(JSON.parse(res2), `${resJson1.city}, ${resJson1.region}, ${resJson1.country}`)
@@ -57,7 +65,11 @@ function App() {
             }
 
             const location = resJson1.results[0].geometry.location
-            fetch(`/api/weather?lat=${location.lat}&lng=${location.lng}`)
+            setGeoLocation({
+              latitude: location.lat,
+              longitude: location.lng
+            })
+            fetch(`/api/weather?lat=${geoLocation.latitude}&lng=${geoLocation.longitude}`)
                 .then(res => res.json())
                 .then(resJson2 => {
                   handleWeatherStats(resJson2, resJson1.results[0].formatted_address)
@@ -103,7 +115,8 @@ function App() {
                   <WeatherResults weatherApiResult={weatherStats} address={address} showDetailsCallback={showDetails}/>
                 </Carousel.Item>
                 <Carousel.Item>
-                  <WeatherDetails detailStats={getDetailStats()} showResultsCallback={showResults}></WeatherDetails>
+                  <WeatherDetails detailStats={getDetailStats()} geoLocation={geoLocation}
+                                  showResultsCallback={showResults}></WeatherDetails>
                 </Carousel.Item>
               </Carousel>
             </Tab.Pane>

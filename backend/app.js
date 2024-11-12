@@ -13,7 +13,7 @@ app.get('/api/hello', (req, res) => {
 app.get('/api/weather', (req, res) => {
   console.log(req.query)
   let response = {}
-  let testing = false
+  let testing = true
   if (testing) {
     response.forecast = require("./test-json/forecast.json")
     response.hourly = require("./test-json/hourly.json")
