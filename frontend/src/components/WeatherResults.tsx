@@ -18,7 +18,7 @@ function WeatherResults({weatherApiResult, address, readyCallback, showDetailsCa
   useEffect(() => {
     readyCallback()
   }, [weatherApiResult, address]);
-  
+
   const tableRows = weatherApiResult.forecast.data.timelines[0].intervals.map(
       (detailStats, index) =>
           <tr key={index}>
