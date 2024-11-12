@@ -28,7 +28,6 @@ export interface WeatherStats {
 }
 
 export interface WeatherApiResult {
-  "current": WeatherStats,
   "forecast": WeatherStats,
   "hourly": WeatherStats,
 }

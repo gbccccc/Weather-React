@@ -4,7 +4,7 @@ export function formatDate(date: Date) {
   return `${weekdayNames[date.getDay()]}, ${monthNames[date.getMonth()]}. ${date.getDate()}, ${date.getFullYear()}`
 }
 
-export function formatTime(date) {
+export function formatTime(date: Date) {
   let hour = date.getHours()
   let ampm = hour >= 12 ? "PM" : "AM"
   hour %= 12

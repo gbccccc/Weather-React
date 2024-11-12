@@ -15,7 +15,6 @@ function App() {
 
   const [address, setAddress] = useState("")
   const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
-    "current": new EmptyWeatherStats(),
     "forecast": new EmptyWeatherStats(),
     "hourly": new EmptyWeatherStats()
   })

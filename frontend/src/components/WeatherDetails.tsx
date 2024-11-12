@@ -15,7 +15,6 @@ function WeatherDetails({detailStats, showResultsCallback}: {
           <Button variant="outline-secondary" onClick={showResultsCallback}>List</Button>
           <Button variant="outline-secondary">X</Button>
         </div>
-        {JSON.stringify(detailStats, null, 2)}
         <Table bordered={false} striped hover className="mt-3">
           <tbody>
           <tr>
