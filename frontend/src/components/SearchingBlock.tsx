@@ -25,7 +25,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
   })
 
   const stateOptions = Object.entries(stateMapping).map(
-      ([key, value]) => <option value={key} key={key}>{value}</option>
+      ([key, value]) => <option value={value} key={key}>{value}</option>
   )
 
   function submit() {
@@ -84,7 +84,6 @@ function SearchingBlock({submitCallback, clearCallback}: {
       "city": false,
       "state": false
     })
-    console.log(e.target.checked)
     setNeedAutodetect(e.target.checked)
   }
 

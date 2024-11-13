@@ -1,9 +1,11 @@
 const express = require('express')
 const cors = require('cors')
+const { json } = require("body-parser");
 const app = express()
 const port = process.env.PORT || 8081
 
 app.use(cors())
+app.use(json())
 app.use(express.static('dist'))
 
 app.get('/api/hello', (req, res) => {
@@ -28,6 +30,55 @@ app.get('/api/weather', (req, res) => {
         res.send(response)
       })
     })
+  }
+})
+
+var favorites = [
+  {
+    city: "Los Angeles",
+    state: "California"
+  }, {
+    city: "New York",
+    state: "New York"
+  }
+]
+
+function isSameFavorite(f1, f2) {
+  return f1.city === f2.city && f2.state === f2.state
+}
+
+app.get('/api/favorites', (req, res) => {
+  res.send(favorites)
+})
+
+app.post('/api/favorites', (req, res) => {
+  if (!req.body) {
+    res.send({ message: "bad request" })
+    return
+  }
+
+  console.log(favorites.findIndex((element) => {
+    return element === req.body
+  }))
+  if (favorites.findIndex((element) => {
+    return isSameFavorite(element, req.body)
+  }) === -1) {
+    favorites.push(req.body)
+    res.send({ message: "added" })
+  } else {
+    res.send({ message: "duplicated" })
+  }
+})
+
+app.delete('/api/favorites', (req, res) => {
+  let index = favorites.findIndex((element) => {
+    return isSameFavorite(element, req.body)
+  })
+  if (index !== -1) {
+    favorites.splice(index, 1)
+    res.send({ message: "deleted" })
+  } else {
+    res.send({ message: "not found" })
   }
 })
 
