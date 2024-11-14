@@ -65,16 +65,6 @@ app.get('/api/weather', (req, res) => {
   }
 })
 
-var localFavorites = [
-  {
-    city: "Los Angeles",
-    state: "California"
-  }, {
-    city: "New York",
-    state: "New York"
-  }
-]
-
 function isSameFavorite(f1, f2) {
   return f1.city === f2.city && f2.state === f2.state
 }
