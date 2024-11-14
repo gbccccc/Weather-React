@@ -3,10 +3,42 @@ const cors = require('cors')
 const { json } = require("body-parser");
 const app = express()
 const port = process.env.PORT || 8081
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 app.use(cors())
 app.use(json())
 app.use(express.static('dist'))
+
+const uri = "mongodb+srv://gbccccc:0M2GuzV2CYpVY26p@favorites.kpcvz.mongodb.net/?retryWrites=true&w=majority&appName=favorites"
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+function favoritesCollection() {
+  return client.db("weather-favorites").collection("weather-favorites")
+}
+
+function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    client.connect().then(() => {
+      // Send a ping to confirm a successful connection
+      client.db("admin").command({ ping: 1 }).then(() => {
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+      });
+    });
+  } finally {
+    // Ensures that the client will close when you finish/error
+    client.close().then();
+  }
+}
+
+run();
 
 app.get('/api/hello', (req, res) => {
   res.send('Hello World!')
@@ -33,7 +65,7 @@ app.get('/api/weather', (req, res) => {
   }
 })
 
-var favorites = [
+var localFavorites = [
   {
     city: "Los Angeles",
     state: "California"
@@ -48,7 +80,10 @@ function isSameFavorite(f1, f2) {
 }
 
 app.get('/api/favorites', (req, res) => {
-  res.send(favorites)
+  let options = { projection: { _id: 0, city: 1, state: 1 } }
+  favoritesCollection().find({}, options).toArray().then((favorites) => {
+    res.send(favorites)
+  })
 })
 
 app.post('/api/favorites', (req, res) => {
@@ -57,29 +92,33 @@ app.post('/api/favorites', (req, res) => {
     return
   }
 
-  console.log(favorites.findIndex((element) => {
-    return element === req.body
-  }))
-  if (favorites.findIndex((element) => {
-    return isSameFavorite(element, req.body)
-  }) === -1) {
-    favorites.push(req.body)
-    res.send({ message: "added" })
-  } else {
-    res.send({ message: "duplicated" })
-  }
+  let options = { projection: { _id: 0, city: 1, state: 1 } }
+  favoritesCollection().find({}, options).toArray().then((favorites) => {
+    if (favorites.findIndex((element) => {
+      return isSameFavorite(element, req.body)
+    }) === -1) {
+      favoritesCollection().insertOne(req.body).then(_ => {
+        res.send({ message: "added" })
+      })
+    } else {
+      res.send({ message: "duplicated" })
+    }
+  })
 })
 
 app.delete('/api/favorites', (req, res) => {
-  let index = favorites.findIndex((element) => {
-    return isSameFavorite(element, req.body)
-  })
-  if (index !== -1) {
-    favorites.splice(index, 1)
-    res.send({ message: "deleted" })
-  } else {
-    res.send({ message: "not found" })
+  if (!req.body) {
+    res.send({ message: "bad request" })
+    return
   }
+
+  favoritesCollection().deleteOne(req.body).then(result => {
+    if (result.deletedCount > 0) {
+      res.send({ message: "removed" })
+    } else {
+      res.send({ message: "not found" })
+    }
+  })
 })
 
 app.listen(port, () => {
