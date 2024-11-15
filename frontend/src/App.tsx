@@ -1,5 +1,5 @@
 import {useRef, useState} from 'react';
-import {Carousel, Nav, ProgressBar, Tab} from "react-bootstrap";
+import {Alert, Carousel, Nav, ProgressBar, Tab} from "react-bootstrap";
 import 'src/styles/App.css';
 import SearchingBlock from "src/components/SearchingBlock";
 import WeatherResults from "src/components/WeatherResults";
@@ -14,6 +14,7 @@ function App() {
   const carouselRef = useRef<CarouselRef>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
+  const errorAlertRef = useRef<HTMLDivElement>(null)
 
   const [address, setAddress] = useState("")
   const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
@@ -34,13 +35,15 @@ function App() {
     return weatherStats.forecast.data.timelines[0].intervals[detailIndex]
   }
 
-  function onClear() {
+  function clear() {
     progressBarRef.current!.style.display = "none"
     resultsRef.current!.style.display = "none"
+    errorAlertRef.current!.style.display = "none"
   }
 
-  function noResult() {
-    onClear()
+  function onError() {
+    clear()
+    errorAlertRef.current!.style.display = "block"
   }
 
   function onResultsReady() {
@@ -51,7 +54,7 @@ function App() {
   }
 
   function submitAddress(needAutodetect: boolean, address: string) {
-    resultsRef.current!.style.display = "none"
+    clear()
     progressBarRef.current!.style.display = "block"
     if (needAutodetect) {
       fetch(`https://ipinfo.io/?token=${ipInfoKey}`).then(res => res.json()).then(resJson1 => {
@@ -66,14 +69,18 @@ function App() {
             .then(res2 => {
               handleWeatherStats(JSON.parse(res2), `${resJson1.city}, ${resJson1.region}, ${resJson1.country}`)
             })
+            .catch(() => {
+              console.log("123123123")
+              onError()
+            })
       })
     } else {
       fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleApiKey}`)
           .then(res => res.json())
           .then(resJson1 => {
             if (resJson1.results.length === 0) {
-              onClear()
-              noResult()
+              clear()
+              onError()
               return
             }
 
@@ -87,13 +94,17 @@ function App() {
                 .then(resJson2 => {
                   handleWeatherStats(resJson2, resJson1.results[0].formatted_address)
                 })
+                .catch(() => {
+                  console.log("123123123")
+                  onError()
+                })
           })
     }
   }
 
   function handleWeatherStats(response: object, address: string) {
     if (!("data" in (response as WeatherApiResult).forecast && "data" in (response as WeatherApiResult).hourly)) {
-      noResult()
+      onError()
     } else {
       setWeatherStatsReady(true)
       setWeatherStats(response as WeatherApiResult)
@@ -114,7 +125,7 @@ function App() {
 
   return (
       <div className="App">
-        <SearchingBlock submitCallback={submitAddress} clearCallback={onClear}/>
+        <SearchingBlock submitCallback={submitAddress} clearCallback={clear}/>
         <Tab.Container id="left-tabs-example" defaultActiveKey="results">
           <Nav variant="pills" className="justify-content-center mt-3">
             <Nav.Item>
@@ -124,8 +135,11 @@ function App() {
               <Nav.Link eventKey="favorites">Favorites</Nav.Link>
             </Nav.Item>
           </Nav>
-          <Tab.Content>
+          <Tab.Content className="mt-3">
             <Tab.Pane eventKey="results">
+              <Alert variant="danger" className="error-alert" ref={errorAlertRef}>
+                An error occurred! Please try again later.
+              </Alert>
               <div ref={progressBarRef} className="progress-bar-div">
                 <ProgressBar animated now={50} className="mt-4 custom-progress-bar"/>
               </div>

@@ -18,3 +18,7 @@
     justify-self: center;
     width: 70%;
 }
+
+.error-alert {
+    display: none;
+}
