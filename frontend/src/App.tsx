@@ -57,10 +57,10 @@ function App() {
         const locArray = resJson1.loc.split(",")
 
         setGeoLocation({
-          latitude: parseInt(locArray[0]),
-          longitude: parseInt(locArray[1])
+          latitude: parseFloat(locArray[0]),
+          longitude: parseFloat(locArray[1])
         })
-        fetch(`/api/weather?lat=${geoLocation.latitude}&lng=${geoLocation.longitude}`)
+        fetch(`/api/weather?lat=${locArray[0]}&lng=${locArray[1]}`)
             .then(res2 => res2.text())
             .then(res2 => {
               handleWeatherStats(JSON.parse(res2), `${resJson1.city}, ${resJson1.region}, ${resJson1.country}`)
@@ -81,7 +81,7 @@ function App() {
               latitude: location.lat,
               longitude: location.lng
             })
-            fetch(`/api/weather?lat=${geoLocation.latitude}&lng=${geoLocation.longitude}`)
+            fetch(`/api/weather?lat=${location.lat}&lng=${location.lng}`)
                 .then(res => res.json())
                 .then(resJson2 => {
                   handleWeatherStats(resJson2, resJson1.results[0].formatted_address)
