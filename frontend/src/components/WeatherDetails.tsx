@@ -6,13 +6,18 @@ import {weatherMapping} from "../scripts/mappings.ts";
 import {useEffect, useRef} from "react";
 import {Loader} from "@googlemaps/js-api-loader";
 
-function WeatherDetails({detailStats, geoLocation, showResultsCallback}: {
+function WeatherDetails({detailStats, address, geoLocation, showResultsCallback}: {
   detailStats: DetailStats,
+  address: string,
   geoLocation: GeoLocation,
   showResultsCallback: () => void
 }) {
   const mapKey = "AIzaSyByDQRQ_wWMJV-Jpptl_zPP5y4trzRNzQo"
   const mapDivRef = useRef<HTMLDivElement>(null);
+
+  const xQuery = `The temperature in ${address} on ${formatDate(new Date(detailStats.startTime))} \
+is ${detailStats.values.temperature}°F and the conditions are \
+${weatherMapping[detailStats.values.weatherCode as keyof typeof weatherMapping].description}`
 
   function initMap() {
     const loader = new Loader({
@@ -44,7 +49,8 @@ function WeatherDetails({detailStats, geoLocation, showResultsCallback}: {
         <h3>{formatDate(new Date(detailStats.startTime))}</h3>
         <div className="results-buttons justify-content-between">
           <Button variant="outline-secondary" onClick={showResultsCallback}>List</Button>
-          <Button variant="outline-secondary">X</Button>
+          <a className="btn btn-outline-secondary twitter-share-button"
+             href={`https://twitter.com/intent/tweet?text=${xQuery}&hashtags=CSCI571WeatherForecast`}/>
         </div>
         <Table bordered={false} striped hover className="mt-3 weather-details-table">
           <tbody>

@@ -150,7 +150,7 @@ function App() {
                                     readyCallback={onResultsReady} showDetailsCallback={showDetails}/>
                   </Carousel.Item>
                   <Carousel.Item>
-                    <WeatherDetails detailStats={getDetailStats()} geoLocation={geoLocation}
+                    <WeatherDetails detailStats={getDetailStats()} address={address} geoLocation={geoLocation}
                                     showResultsCallback={showResultsTable}></WeatherDetails>
                   </Carousel.Item>
                 </Carousel>

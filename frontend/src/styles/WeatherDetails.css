@@ -16,3 +16,11 @@
     width: 100%;
     height: 500px;
 }
+
+.twitter-share-button {
+    background-image: url("/images/twitter-x.svg");
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 40px;
+}
