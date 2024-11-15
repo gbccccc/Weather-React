@@ -1,4 +1,4 @@
-import {DetailStats} from "../scripts/types.ts";
+import {DetailStats} from "src/scripts/types.ts";
 import Highcharts from "highcharts";
 import {Options} from "highcharts";
 import HighchartsReact from "highcharts-react-official";

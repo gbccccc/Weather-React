@@ -1,4 +1,4 @@
-import {HourlyDetailStats} from "../scripts/types.ts";
+import {HourlyDetailStats} from "src/scripts/types.ts";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsMore from "highcharts/highcharts-more";

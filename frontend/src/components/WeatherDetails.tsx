@@ -2,7 +2,7 @@ import "src/styles/WeatherDetails.css"
 import {Address, DetailStats, GeoLocation} from "../scripts/types.ts";
 import {formatDate, formatTime} from "../scripts/tools.ts";
 import {Button, Table} from "react-bootstrap";
-import {weatherMapping} from "../scripts/mappings.ts";
+import {weatherMapping} from "src/scripts/mappings.ts";
 import {useEffect, useRef} from "react";
 import {Loader} from "@googlemaps/js-api-loader";
 

@@ -4,7 +4,7 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useRef, useState} from "react";
-import {Address} from "../scripts/types.ts";
+import {Address} from "src/scripts/types.ts";
 
 function SearchingBlock({submitCallback, clearCallback}: {
   submitCallback: (needAutodetect: boolean, address: Address, addressString: string) => void,

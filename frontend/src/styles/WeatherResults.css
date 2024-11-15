@@ -3,6 +3,22 @@
     margin-top: 20px;
 }
 
+.is-favorite-button {
+    background-image: url("/images/star-fill.svg");
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 40px;
+}
+
+.not-favorite-button {
+    background-image: url("/images/star.svg");
+    background-size: 60%;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 40px;
+}
+
 .weather-results-table {
     text-align: left;
     width: 100%;

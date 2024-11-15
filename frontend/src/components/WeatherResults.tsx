@@ -4,19 +4,42 @@ import {weatherMapping} from "src/scripts/mappings";
 import "src/styles/WeatherResults.css"
 import {formatDate} from "src/scripts/tools";
 import {Button, Tab, Tabs} from "react-bootstrap";
-import Meteogram from "./Meteogram.tsx";
-import TemperatureMinMaxChart from "./TemperatureMinMaxChart.tsx";
+import Meteogram from "src/components/Meteogram.tsx";
+import TemperatureMinMaxChart from "src/components/TemperatureMinMaxChart.tsx";
 import {useEffect} from "react";
+import {addFavorite, deleteFavorite} from "src/scripts/favorites-requests.ts";
 
-function WeatherResults({weatherApiResult, address, readyCallback, showDetailsCallback}: {
+function WeatherResults({
+                          weatherApiResult,
+                          address,
+                          isFavorite,
+                          readyCallback,
+                          showDetailsCallback,
+                          updateFavoritesCallback
+                        }: {
   weatherApiResult: WeatherApiResult,
   address: Address,
-  readyCallback: () => void
-  showDetailsCallback: (index?: number) => void
+  isFavorite: boolean,
+  readyCallback: () => void,
+  showDetailsCallback: (index?: number) => void,
+  updateFavoritesCallback: () => void
 }) {
   useEffect(() => {
     readyCallback()
   }, [weatherApiResult, address]);
+
+  function onClickFavoriteButton() {
+    if (isFavorite) {
+      deleteFavorite(address).then(updateFavoritesCallback)
+    } else {
+      addFavorite(address).then(updateFavoritesCallback)
+    }
+  }
+
+  const favoritesButton = (() => {
+    const favoriteButtonClass = isFavorite ? "is-favorite-button" : "not-favorite-button";
+    return <Button variant="outline-secondary" className={favoriteButtonClass} onClick={onClickFavoriteButton}></Button>
+  })()
 
   const tableRows = weatherApiResult.forecast.data.timelines[0].intervals.map(
       (detailStats, index) =>
@@ -41,6 +64,7 @@ function WeatherResults({weatherApiResult, address, readyCallback, showDetailsCa
       <div className="weather-results">
         <h3>Forecast at {address.city}, {address.state}</h3>
         <div className="results-buttons justify-content-end">
+          {favoritesButton}
           <Button variant="link"
                   onClick={() => showDetailsCallback()}>Details</Button>
         </div>

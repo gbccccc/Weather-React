@@ -84,6 +84,7 @@ app.get('/api/favorites', (req, res) => {
 })
 
 app.post('/api/favorites', (req, res) => {
+  console.log(req.body)
   if (!req.body) {
     res.send({ message: "bad request" })
     return

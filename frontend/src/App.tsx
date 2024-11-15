@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Alert, Carousel, Nav, ProgressBar, Tab} from "react-bootstrap";
 import 'src/styles/App.css';
 import SearchingBlock from "src/components/SearchingBlock";
@@ -12,6 +12,8 @@ import {
 } from "src/scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
 import WeatherDetails from "./components/WeatherDetails.tsx";
+import AddressFavorites from "./components/AddressFavorites.tsx";
+import {isSameFavorite} from "./scripts/favorites-requests.ts";
 
 function App() {
   const ipInfoKey = "63511c0996acf1"
@@ -36,6 +38,11 @@ function App() {
     latitude: 0,
     longitude: 0
   })
+  const [favorites, setFavorites] = useState<Address[]>([])
+
+  useEffect(() => {
+    updateFavorites()
+  }, []);
 
   function getDetailStats() {
     if (weatherStats.forecast.data.timelines[0].intervals.length === 0) {
@@ -132,6 +139,20 @@ function App() {
     carouselRef.current!.prev()
   }
 
+  function updateFavorites() {
+    fetch("/api/favorites")
+        .then(res => res.json())
+        .then(
+            resJson => setFavorites(resJson)
+        )
+  }
+
+  function isFavoriteAddress(address: Address) {
+    return !(favorites.findIndex((element) => {
+      return isSameFavorite(element, address)
+    }) === -1)
+  }
+
   return (
       <div className="App">
         <SearchingBlock submitCallback={submitAddress} clearCallback={clear}/>
@@ -156,7 +177,8 @@ function App() {
                 <Carousel controls={false} indicators={false} interval={null} ref={carouselRef} touch={false}>
                   <Carousel.Item>
                     <WeatherResults weatherApiResult={weatherStats} address={address}
-                                    readyCallback={onResultsReady} showDetailsCallback={showDetails}/>
+                                    isFavorite={isFavoriteAddress(address)} readyCallback={onResultsReady}
+                                    showDetailsCallback={showDetails} updateFavoritesCallback={updateFavorites}/>
                   </Carousel.Item>
                   <Carousel.Item>
                     <WeatherDetails detailStats={getDetailStats()} address={address} geoLocation={geoLocation}
@@ -165,7 +187,9 @@ function App() {
                 </Carousel>
               </div>
             </Tab.Pane>
-            <Tab.Pane eventKey="favorites">Favorites</Tab.Pane>
+            <Tab.Pane eventKey="favorites">
+              <AddressFavorites favorites={favorites} updateFavoritesCallback={updateFavorites}/>
+            </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
       </div>
