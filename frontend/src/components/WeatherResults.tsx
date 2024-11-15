@@ -66,7 +66,9 @@ function WeatherResults({
         <div className="results-buttons justify-content-end">
           {favoritesButton}
           <Button variant="link"
-                  onClick={() => showDetailsCallback()}>Details</Button>
+                  onClick={() => showDetailsCallback()}>
+            Details<i className="bi bi-chevron-right"></i>
+          </Button>
         </div>
         <Tabs defaultActiveKey="day-view" className="justify-content-end mb-3">
           <Tab eventKey="day-view" title="Day View">

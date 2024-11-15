@@ -48,7 +48,9 @@ ${weatherMapping[detailStats.values.weatherCode as keyof typeof weatherMapping].
       <div className="weather-details">
         <h3>{formatDate(new Date(detailStats.startTime))}</h3>
         <div className="results-buttons justify-content-between">
-          <Button variant="outline-secondary" onClick={showResultsCallback}>List</Button>
+          <Button variant="outline-secondary" onClick={showResultsCallback}>
+            <i className="bi bi-chevron-left"></i>List
+          </Button>
           <a className="btn btn-outline-secondary twitter-share-button"
              href={`https://twitter.com/intent/tweet?text=${xQuery}&hashtags=CSCI571WeatherForecast`}/>
         </div>

@@ -151,10 +151,12 @@ function SearchingBlock({submitCallback, clearCallback}: {
                           onChange={onAutodetectChange} label="Current Location"></Form.Check>
             </Col>
           </Form.Group>
-          <Button className="form-button" variant="primary" disabled={isSubmitDisabled()} onClick={submit}><i
-              className="bi bi-search"></i>Search</Button>
-          <Button className="form-button" variant="outline-secondary" onClick={clear}><i
-              className="bi bi-list-nested"></i>Clear</Button>
+          <Button className="form-button" variant="primary" disabled={isSubmitDisabled()} onClick={submit}>
+            <i className="bi bi-search"></i>Search
+          </Button>
+          <Button className="form-button" variant="outline-secondary" onClick={clear}>
+            <i className="bi bi-list-nested"></i>Clear
+          </Button>
         </Form>
       </div>
   )
