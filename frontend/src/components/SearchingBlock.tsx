@@ -4,9 +4,10 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useRef, useState} from "react";
+import {Address} from "../scripts/types.ts";
 
 function SearchingBlock({submitCallback, clearCallback}: {
-  submitCallback: (needAutodetect: boolean, formData: string) => void,
+  submitCallback: (needAutodetect: boolean, address: Address, addressString: string) => void,
   clearCallback: () => void
 }) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -30,7 +31,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
 
   function submit() {
     if (needAutodetect) {
-      submitCallback(needAutodetect, "")
+      submitCallback(needAutodetect, {city: "", state: ""} as Address, "")
       return
     }
 
@@ -46,7 +47,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
       addressArray.push((entry[1] as string).replaceAll(" ", "+"))
     }
     const addressStr = addressArray.join()
-    submitCallback(needAutodetect, addressStr)
+    submitCallback(needAutodetect, {city: entries[1][1], state: entries[2][1]} as Address, addressStr)
   }
 
   function clear() {

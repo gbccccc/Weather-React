@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import {WeatherApiResult} from "src/scripts/types";
+import {Address, WeatherApiResult} from "src/scripts/types";
 import {weatherMapping} from "src/scripts/mappings";
 import "src/styles/WeatherResults.css"
 import {formatDate} from "src/scripts/tools";
@@ -10,7 +10,7 @@ import {useEffect} from "react";
 
 function WeatherResults({weatherApiResult, address, readyCallback, showDetailsCallback}: {
   weatherApiResult: WeatherApiResult,
-  address: string,
+  address: Address,
   readyCallback: () => void
   showDetailsCallback: (index?: number) => void
 }) {
@@ -39,7 +39,7 @@ function WeatherResults({weatherApiResult, address, readyCallback, showDetailsCa
 
   return (
       <div className="weather-results">
-        <h3>Forecast at {address}</h3>
+        <h3>Forecast at {address.city}, {address.state}</h3>
         <div className="results-buttons justify-content-end">
           <Button variant="link"
                   onClick={() => showDetailsCallback()}>Details</Button>

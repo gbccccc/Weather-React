@@ -1,5 +1,5 @@
 import "src/styles/WeatherDetails.css"
-import {DetailStats, GeoLocation} from "../scripts/types.ts";
+import {Address, DetailStats, GeoLocation} from "../scripts/types.ts";
 import {formatDate, formatTime} from "../scripts/tools.ts";
 import {Button, Table} from "react-bootstrap";
 import {weatherMapping} from "../scripts/mappings.ts";
@@ -8,14 +8,14 @@ import {Loader} from "@googlemaps/js-api-loader";
 
 function WeatherDetails({detailStats, address, geoLocation, showResultsCallback}: {
   detailStats: DetailStats,
-  address: string,
+  address: Address,
   geoLocation: GeoLocation,
   showResultsCallback: () => void
 }) {
   const mapKey = "AIzaSyByDQRQ_wWMJV-Jpptl_zPP5y4trzRNzQo"
   const mapDivRef = useRef<HTMLDivElement>(null);
 
-  const xQuery = `The temperature in ${address} on ${formatDate(new Date(detailStats.startTime))} \
+  const xQuery = `The temperature in ${address.city}, ${address.state} on ${formatDate(new Date(detailStats.startTime))} \
 is ${detailStats.values.temperature}°F and the conditions are \
 ${weatherMapping[detailStats.values.weatherCode as keyof typeof weatherMapping].description}`
 

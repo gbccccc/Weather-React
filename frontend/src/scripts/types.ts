@@ -72,6 +72,11 @@ export interface GeoLocation {
   longitude: number
 }
 
+export interface Address {
+  city: string,
+  state: string
+}
+
 export class EmptyDetailStats implements DetailStats {
   startTime = new Date().toTimeString();
   values = {

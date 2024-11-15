@@ -3,7 +3,13 @@ import {Alert, Carousel, Nav, ProgressBar, Tab} from "react-bootstrap";
 import 'src/styles/App.css';
 import SearchingBlock from "src/components/SearchingBlock";
 import WeatherResults from "src/components/WeatherResults";
-import {EmptyDetailStats, EmptyWeatherStats, GeoLocation, WeatherApiResult, WeatherStats} from "src/scripts/types";
+import {
+  Address,
+  EmptyDetailStats,
+  EmptyWeatherStats,
+  GeoLocation,
+  WeatherApiResult,
+} from "src/scripts/types";
 import {CarouselRef} from "react-bootstrap/Carousel";
 import WeatherDetails from "./components/WeatherDetails.tsx";
 
@@ -16,7 +22,10 @@ function App() {
   const resultsRef = useRef<HTMLDivElement>(null)
   const errorAlertRef = useRef<HTMLDivElement>(null)
 
-  const [address, setAddress] = useState("")
+  const [address, setAddress] = useState<Address>({
+    city: "",
+    state: ""
+  })
   const [weatherStats, setWeatherStats] = useState<WeatherApiResult>({
     forecast: new EmptyWeatherStats(),
     hourly: new EmptyWeatherStats()
@@ -53,7 +62,7 @@ function App() {
     }
   }
 
-  function submitAddress(needAutodetect: boolean, address: string) {
+  function submitAddress(needAutodetect: boolean, address: Address, addressString: string) {
     clear()
     progressBarRef.current!.style.display = "block"
     if (needAutodetect) {
@@ -67,7 +76,7 @@ function App() {
         fetch(`/api/weather?lat=${locArray[0]}&lng=${locArray[1]}`)
             .then(res2 => res2.text())
             .then(res2 => {
-              handleWeatherStats(JSON.parse(res2), `${resJson1.city}, ${resJson1.region}, ${resJson1.country}`)
+              handleWeatherStats(JSON.parse(res2), {city: resJson1.city, state: resJson1.region} as Address)
             })
             .catch(() => {
               console.log("123123123")
@@ -75,7 +84,7 @@ function App() {
             })
       })
     } else {
-      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${googleApiKey}`)
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addressString}&key=${googleApiKey}`)
           .then(res => res.json())
           .then(resJson1 => {
             if (resJson1.results.length === 0) {
@@ -92,7 +101,7 @@ function App() {
             fetch(`/api/weather?lat=${location.lat}&lng=${location.lng}`)
                 .then(res => res.json())
                 .then(resJson2 => {
-                  handleWeatherStats(resJson2, resJson1.results[0].formatted_address)
+                  handleWeatherStats(resJson2, address)
                 })
                 .catch(() => {
                   console.log("123123123")
@@ -102,7 +111,7 @@ function App() {
     }
   }
 
-  function handleWeatherStats(response: object, address: string) {
+  function handleWeatherStats(response: object, address: Address) {
     if (!("data" in (response as WeatherApiResult).forecast && "data" in (response as WeatherApiResult).hourly)) {
       onError()
     } else {
