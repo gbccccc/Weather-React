@@ -35,11 +35,12 @@ function App() {
   }
 
   function onClear() {
+    progressBarRef.current!.style.display = "none"
     resultsRef.current!.style.display = "none"
   }
 
   function noResult() {
-
+    onClear()
   }
 
   function onResultsReady() {
@@ -91,9 +92,13 @@ function App() {
   }
 
   function handleWeatherStats(response: object, address: string) {
-    setWeatherStatsReady(true)
-    setWeatherStats(response as typeof weatherStats)
-    setAddress(address)
+    if (!("data" in (response as WeatherApiResult).forecast && "data" in (response as WeatherApiResult).hourly)) {
+      noResult()
+    } else {
+      setWeatherStatsReady(true)
+      setWeatherStats(response as WeatherApiResult)
+      setAddress(address)
+    }
   }
 
   function showDetails(index?: number) {
