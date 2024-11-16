@@ -171,6 +171,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
                             options={autocompleteOptions}
                             renderInput={(params) =>
                                 <TextField {...params} className="custom-mui-textfield-root"
+                                           variant={needAutodetect ? "filled" : "outlined"}
                                            type="input" required name="city"
                                            onChange={(event) => {
                                              onEntryChange(event)

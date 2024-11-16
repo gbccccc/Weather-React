@@ -28,11 +28,6 @@
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.css-1dune0f-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled {
-    background-color: var(--bs-secondary-bg);
-    opacity: 1;
-}
-
 .checkbox-row {
     display: flex;
     justify-content: center;
