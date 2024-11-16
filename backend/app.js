@@ -56,15 +56,15 @@ app.get('/api/weather', (req, res) => {
     response.hourly = require("./test-json/hourly.json")
     res.send(response)
   } else {
-    let url1 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng} \
-        &fields=temperature&fields=temperatureMin&fields=temperatureMax&fields=temperatureApparent&fields=windSpeed \
-        &fields=humidity&fields=weatherCode&fields=precipitationProbability&fields=precipitationType& \
-        fields=sunriseTime&fields=sunsetTime&fields=visibility&fields=cloudCover&units=imperial&timesteps=1d& \
-        startTime=now&endTime=nowPlus5d&timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
-    let url2 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng} \
-        &fields=temperature&fields=windDirection&fields=windSpeed&fields=humidity&fields=weatherCode \
-        &fields=pressureSeaLevel&units=imperial&timesteps=1h&startTime=now&endTime=nowPlus5d& \
-        timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
+    let url1 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng}\
+&fields=temperature&fields=temperatureMin&fields=temperatureMax&fields=temperatureApparent&fields=windSpeed\
+&fields=humidity&fields=weatherCode&fields=precipitationProbability&fields=precipitationType&\
+fields=sunriseTime&fields=sunsetTime&fields=visibility&fields=cloudCover&units=imperial&timesteps=1d&\
+startTime=now&endTime=nowPlus5d&timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
+    let url2 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng}\
+&fields=temperature&fields=windDirection&fields=windSpeed&fields=humidity&fields=weatherCode\
+&fields=pressureSeaLevel&units=imperial&timesteps=1h&startTime=now&endTime=nowPlus5d&\
+timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
     fetch(url1).then(res => res.json()).then(resJson1 => {
       response.forecast = resJson1
       fetch(url2).then(res => res.json()).then(resJson2 => {

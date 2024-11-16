@@ -4,7 +4,7 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useRef, useState} from "react";
-import {Address, AutocompleteOption, AutocompletePrediction} from "src/scripts/types.ts";
+import {Address, AutocompleteOption} from "src/scripts/types.ts";
 import {Autocomplete, TextField} from "@mui/material";
 
 function SearchingBlock({submitCallback, clearCallback}: {
@@ -81,7 +81,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
     }))
   }
 
-  function onCityChange(event: React.SyntheticEvent, newValue: AutocompleteOption) {
+  function onCityChange(event: React.SyntheticEvent, newValue: AutocompleteOption | null) {
     if (newValue === null) {
       setEntryValidated(prevState => ({
         ...prevState,
