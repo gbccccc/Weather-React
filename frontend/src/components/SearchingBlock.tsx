@@ -3,8 +3,9 @@ import {stateMapping} from "src/scripts/mappings.ts"
 import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {useRef, useState} from "react";
+import React, {ChangeEvent, useRef, useState} from "react";
 import {Address} from "src/scripts/types.ts";
+import {Autocomplete, Input, TextField} from "@mui/material";
 
 function SearchingBlock({submitCallback, clearCallback}: {
   submitCallback: (needAutodetect: boolean, address: Address, addressString: string) => void,
@@ -108,7 +109,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column={true} sm={1}>Street</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="street"
+              <Form.Control type="input" required name="street"
                             onChange={onEntryChange} onBlur={onEntryChange}
                             disabled={needAutodetect} isInvalid={isInvalidFeedbackShown("street")}></Form.Control>
               <Form.Control.Feedback type="invalid">
@@ -120,12 +121,17 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Col sm={2}/>
             <Form.Label className="address-label" column={true} sm={1}>City</Form.Label>
             <Col sm={6}>
-              <Form.Control className="form-input" type="input" required name="city"
-                            onChange={onEntryChange} onBlur={onEntryChange}
-                            disabled={needAutodetect} isInvalid={isInvalidFeedbackShown("city")}></Form.Control>
-              <Form.Control.Feedback type="invalid">
-                Please enter a valid city.
-              </Form.Control.Feedback>
+              <Autocomplete disablePortal
+                            disabled={needAutodetect}
+                            options={["123", "345", "567"]}
+                            renderInput={(params) =>
+                                <TextField {...params} className="custom-mui-textfield-root"
+                                           type="input" required name="city"
+                                           onChange={onEntryChange} onBlur={onEntryChange}
+                                           disabled={needAutodetect} error={isInvalidFeedbackShown("city")}
+                                           helperText={isInvalidFeedbackShown("city") ? "Please enter a valid city." : ""}/>
+                            }
+              />
             </Col>
           </Form.Group>
           <Form.Group as={Row} className="mb-3" controlId="state">
