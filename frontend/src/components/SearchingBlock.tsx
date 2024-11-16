@@ -95,7 +95,6 @@ function SearchingBlock({submitCallback, clearCallback}: {
       return
     }
 
-    console.log("city changed")
     setEntryValidated(prevState => ({
       ...prevState,
       city: true
@@ -104,7 +103,6 @@ function SearchingBlock({submitCallback, clearCallback}: {
       ...prevState,
       city: newValue.city
     }))
-    console.log(entryValue.city)
   }
 
   function updateAutoCompletion(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -112,7 +110,6 @@ function SearchingBlock({submitCallback, clearCallback}: {
     fetch(`/api/autocompletion?input=${value}`)
         .then(response => response.json())
         .then(resJson => {
-          console.log(resJson)
           setAutocompleteOptions(resJson as AutocompleteOption[])
         })
   }
