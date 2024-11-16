@@ -1,14 +1,28 @@
 import {Address} from "src/scripts/types.ts";
 import Table from "react-bootstrap/Table";
-import {Button} from "react-bootstrap";
+import {Alert, Button} from "react-bootstrap";
 import {deleteFavorite} from "src/scripts/favorites-requests.ts";
 import "src/styles/AddressFavorites.css"
+import {LegacyRef, useEffect, useRef} from "react";
 
 function AddressFavorites({favorites, updateFavoritesCallback, showFavoriteResultCallback}: {
   favorites: Address[]
   updateFavoritesCallback: () => void
   showFavoriteResultCallback: (address: Address) => void
 }) {
+  const noFavoriteAlertRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLTableElement>(null);
+
+  useEffect(() => {
+    if (favorites.length === 0) {
+      tableRef.current!.style.display = "none";
+      noFavoriteAlertRef.current!.style.display = "block";
+    } else {
+      noFavoriteAlertRef.current!.style.display = "none";
+      tableRef.current!.style.display = "table";
+    }
+  }, [favorites]);
+
   const tableRows = favorites.map((favorite, index) =>
       <tr key={index}>
         <td>{index + 1}</td>
@@ -35,7 +49,7 @@ function AddressFavorites({favorites, updateFavoritesCallback, showFavoriteResul
 
   return (
       <div>
-        <Table bordered={false} className="mt-3">
+        <Table bordered={false} className="mt-3" ref={tableRef}>
           <thead>
           <tr>
             <th>#</th>
@@ -47,7 +61,11 @@ function AddressFavorites({favorites, updateFavoritesCallback, showFavoriteResul
           <tbody>
           {tableRows}
           </tbody>
-        </Table></div>
+        </Table>
+        <Alert variant="warning" ref={noFavoriteAlertRef}>
+          Sorry. No records found.
+        </Alert>
+      </div>
   )
 }
 
