@@ -4,15 +4,24 @@ import {Button} from "react-bootstrap";
 import {deleteFavorite} from "src/scripts/favorites-requests.ts";
 import "src/styles/AddressFavorites.css"
 
-function AddressFavorites({favorites, updateFavoritesCallback}: {
+function AddressFavorites({favorites, updateFavoritesCallback, showFavoriteResultCallback}: {
   favorites: Address[]
   updateFavoritesCallback: () => void
+  showFavoriteResultCallback: (address: Address) => void
 }) {
   const tableRows = favorites.map((favorite, index) =>
       <tr key={index}>
         <td>{index + 1}</td>
-        <td>{favorite.city}</td>
-        <td>{favorite.state}</td>
+        <td>
+          <Button variant="link" onClick={() => showFavoriteResultCallback(favorite)}>
+            {favorite.city}
+          </Button>
+        </td>
+        <td>
+          <Button variant="link" onClick={() => showFavoriteResultCallback(favorite)}>
+            {favorite.state}
+          </Button>
+        </td>
         <td>
           <Button variant="outline-secondary" className="delete-favorite-button"
                   onClick={() => onClickDeletion(favorite)}/>

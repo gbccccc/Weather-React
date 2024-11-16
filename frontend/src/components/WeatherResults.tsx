@@ -46,7 +46,9 @@ function WeatherResults({
           <tr key={index}>
             <td>{index + 1}</td>
             <td><Button variant="link" className="date-button"
-                        onClick={() => showDetailsCallback(index)}>{formatDate(new Date(detailStats.startTime))}</Button>
+                        onClick={() => showDetailsCallback(index)}>
+              {formatDate(new Date(detailStats.startTime))}
+            </Button>
             </td>
             <td>
               <img className="table-status-icon"

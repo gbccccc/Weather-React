@@ -19,7 +19,6 @@ function App() {
   const ipInfoKey = "63511c0996acf1"
   const googleApiKey = "AIzaSyAG1FPkDpKn_pC2Kr9-hgNzodkHb9hyY8E"
 
-  const carouselRef = useRef<CarouselRef>(null)
   const progressBarRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
   const errorAlertRef = useRef<HTMLDivElement>(null)
@@ -39,6 +38,8 @@ function App() {
     longitude: 0
   })
   const [favorites, setFavorites] = useState<Address[]>([])
+  const [tabKey, setTabKey] = useState<string>("results")
+  const [carouselIndex, setCarouselIndex] = useState<number>(0)
 
   useEffect(() => {
     updateFavorites()
@@ -132,11 +133,11 @@ function App() {
     if (typeof index !== 'undefined') {
       setDetailIndex(index)
     }
-    carouselRef.current!.next()
+    setCarouselIndex(1)
   }
 
   function showResultsTable() {
-    carouselRef.current!.prev()
+    setCarouselIndex(0)
   }
 
   function updateFavorites() {
@@ -145,6 +146,12 @@ function App() {
         .then(
             resJson => setFavorites(resJson)
         )
+  }
+
+  function showFavoriteResult(address: Address) {
+    submitAddress(false, address, `${address.city}, ${address.state}`)
+    showResultsTable()
+    setTabKey("results")
   }
 
   function isFavoriteAddress(address: Address) {
@@ -156,8 +163,9 @@ function App() {
   return (
       <div className="App">
         <SearchingBlock submitCallback={submitAddress} clearCallback={clear}/>
-        <Tab.Container id="left-tabs-example" defaultActiveKey="results">
-          <Nav variant="pills" className="justify-content-center mt-3">
+        <Tab.Container id="left-tabs-example" activeKey={tabKey}>
+          <Nav variant="pills" className="justify-content-center mt-3"
+               onSelect={(eventKey) => setTabKey(eventKey!)}>
             <Nav.Item>
               <Nav.Link eventKey="results">Results</Nav.Link>
             </Nav.Item>
@@ -174,7 +182,7 @@ function App() {
                 <ProgressBar animated now={50} className="mt-4 custom-progress-bar"/>
               </div>
               <div ref={resultsRef} className="results-div">
-                <Carousel controls={false} indicators={false} interval={null} ref={carouselRef} touch={false}>
+                <Carousel controls={false} indicators={false} interval={null} activeIndex={carouselIndex} touch={false}>
                   <Carousel.Item>
                     <WeatherResults weatherApiResult={weatherStats} address={address}
                                     isFavorite={isFavoriteAddress(address)} readyCallback={onResultsReady}
@@ -188,7 +196,8 @@ function App() {
               </div>
             </Tab.Pane>
             <Tab.Pane eventKey="favorites">
-              <AddressFavorites favorites={favorites} updateFavoritesCallback={updateFavorites}/>
+              <AddressFavorites favorites={favorites} updateFavoritesCallback={updateFavorites}
+                                showFavoriteResultCallback={showFavoriteResult}/>
             </Tab.Pane>
           </Tab.Content>
         </Tab.Container>
