@@ -9,9 +9,12 @@ app.use(cors())
 app.use(json())
 app.use(express.static('dist'))
 
-const uri = "mongodb+srv://gbccccc:0M2GuzV2CYpVY26p@favorites.kpcvz.mongodb.net/?retryWrites=true&w=majority&appName=favorites"
+const placeApiKey = "AIzaSyByDQRQ_wWMJV-Jpptl_zPP5y4trzRNzQo"
+const tomorrowApiKey = "0H4oNBZe7IJKfOGHp3AcaYRirN7aYsxS"
+
+const mongoDBUri = "mongodb+srv://gbccccc:0M2GuzV2CYpVY26p@favorites.kpcvz.mongodb.net/?retryWrites=true&w=majority&appName=favorites"
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+const client = new MongoClient(mongoDBUri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -57,11 +60,11 @@ app.get('/api/weather', (req, res) => {
         &fields=temperature&fields=temperatureMin&fields=temperatureMax&fields=temperatureApparent&fields=windSpeed \
         &fields=humidity&fields=weatherCode&fields=precipitationProbability&fields=precipitationType& \
         fields=sunriseTime&fields=sunsetTime&fields=visibility&fields=cloudCover&units=imperial&timesteps=1d& \
-        startTime=now&endTime=nowPlus5d&timezone=America%2FLos_Angeles&apikey=0H4oNBZe7IJKfOGHp3AcaYRirN7aYsxS`
+        startTime=now&endTime=nowPlus5d&timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
     let url2 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng} \
         &fields=temperature&fields=windDirection&fields=windSpeed&fields=humidity&fields=weatherCode \
         &fields=pressureSeaLevel&units=imperial&timesteps=1h&startTime=now&endTime=nowPlus5d& \
-        timezone=America%2FLos_Angeles&apikey=0H4oNBZe7IJKfOGHp3AcaYRirN7aYsxS`
+        timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
     fetch(url1).then(res => res.json()).then(resJson1 => {
       response.forecast = resJson1
       fetch(url2).then(res => res.json()).then(resJson2 => {
@@ -118,6 +121,24 @@ app.delete('/api/favorites', (req, res) => {
     }
   })
 })
+
+app.get('/api/autocompletion', (req, res) => {
+    fetch(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${req.query.input}&types=%28cities%29&key=${placeApiKey}`)
+      .then(response => response.json())
+      .then(resJson => {
+        res.send(
+          resJson.predictions.map((prediction) => {
+            return {
+              label: `${prediction.terms[0].value}, ${prediction.terms[1].value}`,
+              city: prediction.terms[0].value,
+              state: prediction.terms[1].value
+            }
+          })
+        )
+      })
+  }
+)
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

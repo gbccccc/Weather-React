@@ -3,9 +3,9 @@ import {stateMapping} from "src/scripts/mappings.ts"
 import {Button, Col, Form, Row} from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {ChangeEvent, useRef, useState} from "react";
-import {Address} from "src/scripts/types.ts";
-import {Autocomplete, Input, TextField} from "@mui/material";
+import React, {useRef, useState} from "react";
+import {Address, AutocompleteOption, AutocompletePrediction} from "src/scripts/types.ts";
+import {Autocomplete, TextField} from "@mui/material";
 
 function SearchingBlock({submitCallback, clearCallback}: {
   submitCallback: (needAutodetect: boolean, address: Address, addressString: string) => void,
@@ -25,6 +25,7 @@ function SearchingBlock({submitCallback, clearCallback}: {
     "city": "",
     "state": ""
   })
+  const [autocompleteOptions, setAutocompleteOptions] = useState<AutocompleteOption[]>([])
 
   const stateOptions = Object.entries(stateMapping).map(
       ([key, value]) => <option value={value} key={key}>{value}</option>
@@ -80,6 +81,50 @@ function SearchingBlock({submitCallback, clearCallback}: {
     }))
   }
 
+  function onCityChange(event: React.SyntheticEvent, newValue: AutocompleteOption) {
+    if (newValue === null) {
+      setEntryValidated(prevState => ({
+        ...prevState,
+        city: true
+      }))
+      setEntriesValue(prevState => ({
+        ...prevState,
+        city: ""
+      }))
+      setAutocompleteOptions([])
+      return
+    }
+
+    console.log("city changed")
+    setEntryValidated(prevState => ({
+      ...prevState,
+      city: true
+    }))
+    setEntriesValue(prevState => ({
+      ...prevState,
+      city: newValue.city
+    }))
+    console.log(entryValue.city)
+  }
+
+  function updateAutoCompletion(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const value = event.target.value
+    fetch(`/api/autocompletion?input=${value}`)
+        .then(response => response.json())
+        .then(resJson => {
+          console.log(resJson)
+          setAutocompleteOptions(resJson as AutocompleteOption[])
+        })
+  }
+
+  function getAutocompleteValue() {
+    return {
+      label: entryValue.city,
+      city: entryValue.city,
+      state: entryValue.state
+    } as AutocompleteOption
+  }
+
   function onAutodetectChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEntryValidated({
       "street": false,
@@ -122,13 +167,19 @@ function SearchingBlock({submitCallback, clearCallback}: {
             <Form.Label className="address-label" column={true} sm={1}>City</Form.Label>
             <Col sm={6}>
               <Autocomplete disablePortal
+                            value={getAutocompleteValue()}
+                            inputValue={entryValue.city}
+                            onChange={(event, newValue) => onCityChange(event, newValue)}
                             disabled={needAutodetect}
-                            options={["123", "345", "567"]}
+                            options={autocompleteOptions}
                             renderInput={(params) =>
                                 <TextField {...params} className="custom-mui-textfield-root"
                                            type="input" required name="city"
-                                           onChange={onEntryChange} onBlur={onEntryChange}
-                                           disabled={needAutodetect} error={isInvalidFeedbackShown("city")}
+                                           onChange={(event) => {
+                                             onEntryChange(event)
+                                             updateAutoCompletion(event)
+                                           }} onBlur={onEntryChange}
+                                           error={isInvalidFeedbackShown("city")}
                                            helperText={isInvalidFeedbackShown("city") ? "Please enter a valid city." : ""}/>
                             }
               />

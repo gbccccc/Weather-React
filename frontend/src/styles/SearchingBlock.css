@@ -13,8 +13,6 @@
 }
 
 .custom-mui-textfield-root .MuiOutlinedInput-root {
-    display: block;
-    width: 100%;
     padding: .375rem .75rem;
     font-size: 1rem;
     font-weight: 400;
