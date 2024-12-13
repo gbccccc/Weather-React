@@ -16,8 +16,8 @@ export function addFavorite(address: Address) {
 }
 
 export function deleteFavorite(address: Address) {
-  return fetch("/api/favorites", {
+  return fetch(`/api/favorites?city=${address.city}&state=${address.state}`, {
     method: "DELETE",
-    body: JSON.stringify(address)
+    body: "{}"
   })
 }
