@@ -1,0 +1,150 @@
+{
+  "data": {
+    "timelines": [
+      {
+        "timestep": "1d",
+        "endTime": "2024-12-16T20:00:00-08:00",
+        "startTime": "2024-12-10T20:00:00-08:00",
+        "intervals": [
+          {
+            "startTime": "2024-12-10T20:00:00-08:00",
+            "values": {
+              "cloudCover": 0,
+              "humidity": 73.79,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 30.07,
+              "temperature": 86.34,
+              "temperatureApparent": 83.01,
+              "temperatureMax": 86.34,
+              "temperatureMin": 56.08,
+              "uvIndex": 6,
+              "visibility": 9.94,
+              "weatherCode": 1000,
+              "windSpeed": 12.02
+            }
+          },
+          {
+            "startTime": "2024-12-11T20:00:00-08:00",
+            "values": {
+              "cloudCover": 0,
+              "humidity": 77.68,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 30.05,
+              "temperature": 84.85,
+              "temperatureApparent": 81.84,
+              "temperatureMax": 84.85,
+              "temperatureMin": 56.14,
+              "uvIndex": 5,
+              "visibility": 9.94,
+              "weatherCode": 1000,
+              "windSpeed": 11.62
+            }
+          },
+          {
+            "startTime": "2024-12-12T20:00:00-08:00",
+            "values": {
+              "cloudCover": 100,
+              "humidity": 57.62,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 30.06,
+              "temperature": 80.97,
+              "temperatureApparent": 79.64,
+              "temperatureMax": 80.97,
+              "temperatureMin": 55.15,
+              "uvIndex": 5,
+              "visibility": 9.94,
+              "weatherCode": 1000,
+              "windSpeed": 12.38
+            }
+          },
+          {
+            "startTime": "2024-12-13T20:00:00-08:00",
+            "values": {
+              "cloudCover": 0,
+              "humidity": 74.71,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 30.13,
+              "temperature": 76.26,
+              "temperatureApparent": 76.26,
+              "temperatureMax": 76.26,
+              "temperatureMin": 53.49,
+              "uvIndex": 6,
+              "visibility": 10.78,
+              "weatherCode": 1000,
+              "windSpeed": 16.96
+            }
+          },
+          {
+            "startTime": "2024-12-14T20:00:00-08:00",
+            "values": {
+              "cloudCover": 35.63,
+              "humidity": 83.58,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 30.13,
+              "temperature": 78.9,
+              "temperatureApparent": 78.9,
+              "temperatureMax": 78.9,
+              "temperatureMin": 52.44,
+              "uvIndex": 5,
+              "visibility": 15,
+              "weatherCode": 1000,
+              "windSpeed": 11.33
+            }
+          },
+          {
+            "startTime": "2024-12-15T20:00:00-08:00",
+            "values": {
+              "cloudCover": 15.75,
+              "humidity": 83.99,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 30.04,
+              "temperature": 81.23,
+              "temperatureApparent": 80.06,
+              "temperatureMax": 81.23,
+              "temperatureMin": 57.3,
+              "uvIndex": 5,
+              "visibility": 15,
+              "weatherCode": 1000,
+              "windSpeed": 10.7
+            }
+          },
+          {
+            "startTime": "2024-12-16T20:00:00-08:00",
+            "values": {
+              "cloudCover": 57.26,
+              "humidity": 80.85,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 29.99,
+              "temperature": 84.2,
+              "temperatureApparent": 82.96,
+              "temperatureMax": 84.2,
+              "temperatureMin": 63.04,
+              "visibility": 15,
+              "weatherCode": 1101,
+              "windSpeed": 11
+            }
+          }
+        ]
+      }
+    ],
+    "warnings": [
+      {
+        "code": 246001,
+        "type": "Time Bounded Field",
+        "message": "The following field is not supported for a time range: 'uvIndex'",
+        "meta": {
+          "field": "uvIndex",
+          "from": "2024-12-10T18:30:00-08:00",
+          "to": "2024-12-16T04:46:00-08:00"
+        }
+      }
+    ]
+  }
+}

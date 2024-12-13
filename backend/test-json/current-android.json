@@ -1,0 +1,31 @@
+{
+  "data": {
+    "timelines": [
+      {
+        "timestep": "current",
+        "endTime": "2024-12-11T16:46:00-08:00",
+        "startTime": "2024-12-11T16:46:00-08:00",
+        "intervals": [
+          {
+            "startTime": "2024-12-11T16:46:00-08:00",
+            "values": {
+              "cloudCover": 0,
+              "humidity": 64,
+              "precipitationProbability": 0,
+              "precipitationType": 0,
+              "pressureSeaLevel": 29.97,
+              "temperature": 61.14,
+              "temperatureApparent": 61.14,
+              "temperatureMax": 61.14,
+              "temperatureMin": 61.14,
+              "uvIndex": 0,
+              "visibility": 9.94,
+              "weatherCode": 1000,
+              "windSpeed": 6.99
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

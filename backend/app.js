@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const { json } = require("body-parser");
 const app = express()
-const port = process.env.PORT || 8081
+const port = process.env.PORT || 8999
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 app.use(cors())
@@ -75,6 +75,35 @@ timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
   }
 })
 
+app.get('/api/android-weather', (req, res) => {
+  console.log(req.query)
+  let response = {}
+  let testing = false
+  if (testing) {
+    response.forecast = require("./test-json/forecast-android.json")
+    response.current = require("./test-json/current-android.json")
+    res.send(response)
+  } else {
+    let url1 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng}\
+&fields=temperature&fields=temperatureMin&fields=temperatureMax&fields=temperatureApparent&fields=windSpeed\
+&fields=humidity&fields=weatherCode&fields=precipitationProbability&fields=precipitationType&\
+fields=visibility&fields=pressureSeaLevel&fields=cloudCover&units=imperial&timesteps=1d&\
+startTime=now&endTime=nowPlus5d&timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
+    let url2 = `https://api.tomorrow.io/v4/timelines?location=${req.query.lat},${req.query.lng}\
+&fields=temperature&fields=temperatureMin&fields=temperatureMax&fields=temperatureApparent&fields=windSpeed\
+&fields=humidity&fields=weatherCode&fields=precipitationProbability&fields=precipitationType&\
+fields=visibility&fields=uvIndex&fields=pressureSeaLevel&fields=cloudCover&units=imperial&timesteps=current&\
+timezone=America%2FLos_Angeles&apikey=${tomorrowApiKey}`
+    fetch(url1).then(res => res.json()).then(resJson1 => {
+      response.forecast = resJson1
+      fetch(url2).then(res => res.json()).then(resJson2 => {
+        response.current = resJson2
+        res.send(response)
+      })
+    })
+  }
+})
+
 function isSameFavorite(f1, f2) {
   return f1.city === f2.city && f2.state === f2.state
 }
@@ -108,12 +137,14 @@ app.post('/api/favorites', (req, res) => {
 })
 
 app.delete('/api/favorites', (req, res) => {
-  if (!req.body) {
-    res.send({ message: "bad request" })
-    return
-  }
+  console.log(req.query)
 
-  favoritesCollection().deleteOne(req.body).then(result => {
+  favoritesCollection().deleteOne(
+    {
+      "city": req.query.city,
+      "state": req.query.state
+    }
+  ).then(result => {
     if (result.deletedCount > 0) {
       res.send({ message: "removed" })
     } else {
@@ -139,6 +170,21 @@ app.get('/api/autocompletion', (req, res) => {
   }
 )
 
+app.get('/api/android-autocompletion', (req, res) => {
+    fetch(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${req.query.input}&types=%28cities%29&key=${placeApiKey}`)
+      .then(response => response.json())
+      .then(resJson => {
+        res.send(
+          resJson.predictions.map((prediction) => {
+            return {
+              city: prediction.terms[0].value,
+              state: prediction.terms[1].value
+            }
+          })
+        )
+      })
+  }
+)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
